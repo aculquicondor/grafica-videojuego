@@ -4,9 +4,10 @@
 
 class Room {
 public:
-    Room(bool doors[4]);
+    Room();
+    Room(const bool doors[4]);
     ~Room();
-    void setEnemies(int number);
+    //void setEnemies(int number);
 private:
     bool doors[];
 };
