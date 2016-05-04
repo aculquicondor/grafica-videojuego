@@ -2,6 +2,7 @@
 #define VIDEOGAME_ROOM_H
 #include <iostream>
 #include <GL/glut.h>
+#include "glm/vec3.hpp"
 
 
 using namespace std;
@@ -16,6 +17,7 @@ public:
     void draw();
 private:
     bool doors[];
+    void drawHexahedron(glm::vec3,glm::vec3);
 
 };
 

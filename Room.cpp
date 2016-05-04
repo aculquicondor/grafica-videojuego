@@ -28,123 +28,80 @@ void Room::draw(){
     glVertex3f(side,0,side);
     glVertex3f(side,0,-side);
     glVertex3f(-side,0,-side);
+    glEnd();
 
     // north wall
     if (doors[0]) {
-        glColor3f(1, 1, 1);
-        glVertex3f(-unit, 0, -side); //door
-        glVertex3f(unit, 0, -side);
-        glVertex3f(unit, 3*unit, -side);
-        glVertex3f(-unit, 3*unit, -side);
-    }
-    else {
-        glColor3f(.6, .6, .6);
-        glVertex3f(-unit, 0, -side); //door
-        glVertex3f(unit, 0, -side);
-        glVertex3f(unit, 3*unit, -side);
-        glVertex3f(-unit, 3*unit, -side);
-    }
-    glColor3f(.6,.6,.6);
-    glVertex3f(unit,0,-side); //  right wall
-    glVertex3f(side,0,-side);
-    glVertex3f(side,3*unit,-side);
-    glVertex3f(unit,3*unit,-side);
-    glVertex3f(-side,0,-side); //  left wall
-    glVertex3f(-unit,0,-side);
-    glVertex3f(-unit,3*unit,-side);
-    glVertex3f(-side,3*unit,-side);
-    glVertex3f(-side,3*unit,-side); //  upper wall
-    glVertex3f(side,3*unit,-side);
-    glVertex3f(side,8*unit,-side);
-    glVertex3f(-side,8*unit,-side);
+        drawHexahedron(glm::vec3(-side-unit,0,-side),glm::vec3(-unit,3*unit,-side-unit));
+        drawHexahedron(glm::vec3(unit,0,-side),glm::vec3(side+unit,3*unit,-side-unit));
+        drawHexahedron(glm::vec3(-2*unit,0,-side-unit),glm::vec3(-unit,3*unit,-side-3*unit));
+        drawHexahedron(glm::vec3(unit,0,-side-unit),glm::vec3(2*unit,3*unit,-side-3*unit));
+    }else
+        drawHexahedron(glm::vec3(-side-unit,0,-side),glm::vec3(side+unit,3*unit,-side-unit));
 
     // east wall
-    if (doors[1]) {
-        glColor3f(1, 1, 1);
-        glVertex3f(side, 0, -unit); //door
-        glVertex3f(side, 0, unit);
-        glVertex3f(side, 3*unit, unit);
-        glVertex3f(side, 3*unit, -unit);
-    }
-    else {
-        glColor3f(.6, .6, .6);
-        glVertex3f(side, 0, -unit); //door
-        glVertex3f(side, 0, unit);
-        glVertex3f(side, 3*unit, unit);
-        glVertex3f(side, 3*unit, -unit);
-    }
-    glColor3f(.6,.6,.6);
-    glVertex3f(side,0,unit); //  rigth wall
-    glVertex3f(side,0,side);
-    glVertex3f(side,3*unit,side);
-    glVertex3f(side,3*unit,unit);
-    glVertex3f(side,0,-side); //  left wall
-    glVertex3f(side,0,-unit);
-    glVertex3f(side,3*unit,-unit);
-    glVertex3f(side,3*unit,-side);
-    glVertex3f(side,3*unit,-side); //  upper wall
-    glVertex3f(side,3*unit,side);
-    glVertex3f(side,8*unit,side);
-    glVertex3f(side,8*unit,-side);
+    if (doors[1]){
+        drawHexahedron(glm::vec3(side,0,side),glm::vec3(side+unit,3*unit,unit));
+        drawHexahedron(glm::vec3(side,0,-unit),glm::vec3(side+unit,3*unit,-side));
+        drawHexahedron(glm::vec3(side+unit,0,-2*unit),glm::vec3(side+3*unit,3*unit,-unit));
+        drawHexahedron(glm::vec3(side+unit,0,unit),glm::vec3(side+3*unit,3*unit,2*unit));
+    }else
+        drawHexahedron(glm::vec3(side,0,side),glm::vec3(side+unit,3*unit,-side));
 
     // south wall
     if (doors[2]){
-        glColor3f(1,1,1);
-        glVertex3f(unit,0,side);
-        glVertex3f(-unit,0,side);
-        glVertex3f(-unit,3*unit,side);
-        glVertex3f(unit,3*unit,side);
-    }
-    else{
-        glColor3f(.6,.6,.6);
-        glVertex3f(unit,0,side);
-        glVertex3f(-unit,0,side);
-        glVertex3f(-unit,3*unit,side);
-        glVertex3f(unit,3*unit,side);
-    }
-    glColor3f(.6,.6,.6);
-    glVertex3f(-unit,0,side); //  right wall
-    glVertex3f(-side,0,side);
-    glVertex3f(-side,3*unit,side);
-    glVertex3f(-unit,3*unit,side);
-    glVertex3f(side,0,side); //  left wall
-    glVertex3f(unit,0,side);
-    glVertex3f(unit,3*unit,side);
-    glVertex3f(side,3*unit,side);
-    glVertex3f(side,3*unit,side); //  upper wall
-    glVertex3f(-side,3*unit,side);
-    glVertex3f(-side,8*unit,side);
-    glVertex3f(side,8*unit,side);
+        drawHexahedron(glm::vec3(-side-unit,0,side+unit),glm::vec3(-unit,3*unit,side));
+        drawHexahedron(glm::vec3(unit,0,side),glm::vec3(side+unit,3*unit,side+unit));
+        drawHexahedron(glm::vec3(-2*unit,0,side+unit),glm::vec3(-unit,3*unit,side+3*unit));
+        drawHexahedron(glm::vec3(unit,0,side+unit),glm::vec3(2*unit,3*unit,side+3*unit));
+    } else
+        drawHexahedron(glm::vec3(-side-unit,0,side+unit),glm::vec3(side+unit,3*unit,side));
 
     // west wall
     if (doors[3]){
-        glColor3f(1,1,1);
-        glVertex3f(-side,0,unit);
-        glVertex3f(-side,0,-unit);
-        glVertex3f(-side,3*unit,-unit);
-        glVertex3f(-side,3*unit,unit);
-    }
-    else{
-        glColor3f(.6,.6,.6);
-        glVertex3f(-side,0,unit);
-        glVertex3f(-side,0,-unit);
-        glVertex3f(-side,3*unit,-unit);
-        glVertex3f(-side,3*unit,unit);
-    }
+        drawHexahedron(glm::vec3(-side-unit,0,side),glm::vec3(-side,3*unit,unit));
+        drawHexahedron(glm::vec3(-side-unit,0,-unit),glm::vec3(-side,3*unit,-side));
+        drawHexahedron(glm::vec3(-side-unit,0,2*unit),glm::vec3(-side-3*unit,3*unit,unit));
+        drawHexahedron(glm::vec3(-side-unit,0,-unit),glm::vec3(-side-3*unit,3*unit,-2*unit));
+    }else
+        drawHexahedron(glm::vec3(-side-unit,0,side),glm::vec3(-side,3*unit,-side));
+}
+
+void Room::drawHexahedron(glm::vec3 lower,glm::vec3 upper) {
+    glBegin(GL_QUADS);
+    // front side
     glColor3f(.6,.6,.6);
-    glVertex3f(-side,0,-unit); //  rigth wall
-    glVertex3f(-side,0,-side);
-    glVertex3f(-side,3*unit,-side);
-    glVertex3f(-side,3*unit,-unit);
-    glVertex3f(-side,0,side); //  left wall
-    glVertex3f(-side,0,unit);
-    glVertex3f(-side,3*unit,unit);
-    glVertex3f(-side,3*unit,side);
-    glVertex3f(-side,3*unit,side); //  rigth wall
-    glVertex3f(-side,3*unit,-side);
-    glVertex3f(-side,8*unit,-side);
-    glVertex3f(-side,8*unit,side);
+    glVertex3f(lower[0],lower[1],lower[2]);
+    glVertex3f(upper[0],lower[1],lower[2]);
+    glVertex3f(upper[0],upper[1],lower[2]);
+    glVertex3f(lower[0],upper[1],lower[2]);
+    // back side
+    glVertex3f(lower[0],lower[1],upper[2]);
+    glVertex3f(lower[0],upper[1],upper[2]);
+    glVertex3f(upper[0],upper[1],upper[2]);
+    glVertex3f(upper[0],lower[1],upper[2]);
+    // down side
+    glColor3f(.4,.4,.4);
+    glVertex3f(lower[0],lower[1],upper[2]);
+    glVertex3f(upper[0],lower[1],upper[2]);
+    glVertex3f(upper[0],lower[1],lower[2]);
+    glVertex3f(lower[0],lower[1],lower[2]);
+    // up side
+    glVertex3f(lower[0],upper[1],lower[2]);
+    glVertex3f(upper[0],upper[1],lower[2]);
+    glVertex3f(upper[0],upper[1],upper[2]);
+    glVertex3f(lower[0],upper[1],upper[2]);
+    // left side
+    glColor3f(.5,.5,.5);
+    glVertex3f(lower[0],lower[1],upper[2]);
+    glVertex3f(lower[0],lower[1],lower[2]);
+    glVertex3f(lower[0],upper[1],lower[2]);
+    glVertex3f(lower[0],upper[1],upper[2]);
+    // right side
+    glVertex3f(upper[0],lower[1],lower[2]);
+    glVertex3f(upper[0],lower[1],upper[2]);
+    glVertex3f(upper[0],upper[1],upper[2]);
+    glVertex3f(upper[0],upper[1],lower[2]);
 
     glEnd();
 }
-
