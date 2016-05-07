@@ -13,7 +13,6 @@ public:
     virtual ~Map();
     int getRows() const;
     int getColumns() const;
-    void show() const;
 
 private:
     Room ***map;
@@ -23,7 +22,7 @@ private:
     std::default_random_engine random_engine;
 
     bool valid(int r, int c);
-    void dfs(int r, int c, int dir, bool first = false);
+    void dfs(int r, int c, int dir);
     static const int dr[], dc[];
 };
 

@@ -14,7 +14,7 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
 
     start_r = std::uniform_int_distribution<int>(0, rows)(random_engine);
     start_c = std::uniform_int_distribution<int>(0, cols)(random_engine);
-    dfs(start_r, start_c, 0, true);
+    dfs(start_r, start_c, 0);
 }
 
 
@@ -33,11 +33,11 @@ bool Map::valid(int r, int c) {
 }
 
 
-void Map::dfs(int r, int c, int dir, bool first) {
+void Map::dfs(int r, int c, int dir) {
     exit_r = r;
     exit_c = c;
-    bool doors[] = {0, 0, 0, 0};
     int nr, nc;
+    map[r][c] = new Room();
     for (int i = 0; i < 4; ++i) {
         int j = (dir + i) % 4;
         nr = r + dr[j];
@@ -46,12 +46,10 @@ void Map::dfs(int r, int c, int dir, bool first) {
                 std::uniform_real_distribution<double>()(random_engine) < (((dir ^ j) & 1) ? .05 : .75)) {
             if (map[nr][nc] == nullptr)
                 dfs(nr, nc, j);
-            doors[j] = true;
-        } else if (not first and j ==  (dir + 2) % 4) {
-            doors[j] = true;
+            map[r][c]->setDoor(j);
+            map[nr][nc]->setDoor((j + 2) % 4);
         }
     }
-    map[r][c] = new Room(doors);
 }
 
 int Map::getRows() const {

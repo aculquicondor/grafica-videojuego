@@ -3,17 +3,21 @@
 
 Room::Room() {
     for (int i = 0; i < 4; ++i)
-        doors[i] = false;
-}
-
-
-Room::Room(const bool doors[4]) {
-    for (int i = 0; i < 4; ++i)
-        this->doors[i] = doors[i];
+        this->doors[i] = 0;
 }
 
 
 Room::~Room() {
+}
+
+
+void Room::setDoor(int id, bool value) {
+    doors[id] = value;
+}
+
+
+bool Room::getDoor(int id) {
+    return doors[id];
 }
 
 void Room::draw(){

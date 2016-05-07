@@ -1,18 +1,17 @@
 #ifndef VIDEOGAME_ROOM_H
 #define VIDEOGAME_ROOM_H
-#include <iostream>
 #include <GL/glut.h>
 #include "glm/vec3.hpp"
 
 
-using namespace std;
 class Room {
 public:
     Room();
-    Room(const bool doors[4]);
     ~Room();
     GLint *textures;
-    //void setEnemies(int number);
+
+    void setDoor(int id, bool value = true);
+    bool getDoor(int id);
 
     void draw();
 private:
