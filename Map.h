@@ -2,9 +2,9 @@
 #define VIDEOGAME_MAP_H
 
 #include <random>
-#include <iostream>
+#include <glm/vec2.hpp>
+
 #include "Room.h"
-#include "glm/vec2.hpp"
 
 
 using namespace std;

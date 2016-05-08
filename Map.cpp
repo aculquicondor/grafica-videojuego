@@ -101,7 +101,6 @@ void Map::show()
                     drawSquare(glm::vec2(x-0.1*unit , y-0.5*unit),glm::vec2(x+.1*unit, y-.45*unit));
                 if (room->getDoor(0)) //west
                     drawSquare(glm::vec2(x-0.5*unit , y-.1*unit),glm::vec2(x-.45*unit, y+.1*unit));
-                //cout<<r<<" "<<c<<" "<<room<<endl;
             }
         }
     }
