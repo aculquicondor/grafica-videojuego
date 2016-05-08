@@ -1,27 +1,29 @@
 //
 // Created by jasillo on 08/05/16.
 //
+#ifndef VIDEOGAME_ITEM_H
+#define VIDEOGAME_ITEM_H
+
 #include "glm/vec3.hpp"
 #include <GL/glut.h>
 
-#ifndef VIDEOGAME_ITEM_H
-#define VIDEOGAME_ITEM_H
-#define GOLDEN_KEY 0
-#define SILVER_KEY 1
-#define LIFE 2
-#define SPEED 3
-#define POWER 4
-#define TRUNK 5
-#define SIZE 1
 
-using namespace std;
+struct ItemType {
+    GOLDEN_KEY;
+    SILVER_KEY;
+    LIFE;
+    SPEED;
+    POWER;
+    TRUNK;
+};
+
 
 class Item {
 public:
-    Item(int);
-    Item(glm::vec3, int);
+    Item(ItemType itemType);
+    Item(glm::vec3 pos, ItemType itemType);
     ~Item();
-    void setPosition(glm::vec3);
+    void setPosition(glm::vec3 pos);
     void draw();
     bool* getUpgrade();
 private:
