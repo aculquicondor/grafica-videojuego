@@ -1,7 +1,8 @@
 #ifndef VIDEOGAME_ROOM_H
 #define VIDEOGAME_ROOM_H
+
 #include <GL/glut.h>
-#include "glm/vec3.hpp"
+#include <glm/vec3.hpp>
 
 
 class Room {

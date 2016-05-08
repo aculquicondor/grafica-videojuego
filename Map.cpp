@@ -12,8 +12,8 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
         for (int j = 0; j < cols; ++j)
             map[i][j] = nullptr;
 
-    start_r = std::uniform_int_distribution<int>(0, rows)(random_engine);
-    start_c = std::uniform_int_distribution<int>(0, cols)(random_engine);
+    start_r = std::uniform_int_distribution<int>(0, rows - 1)(random_engine);
+    start_c = std::uniform_int_distribution<int>(0, cols - 1)(random_engine);
     dfs(start_r, start_c, 0);
 }
 
@@ -68,18 +68,17 @@ const int Map::dc[] = {0, 1, 0, -1};
 void Map::show()
 {
     float x,y;
-    //posicion inicial superior izquierda
-    float initialX = -8.0f;
-    float initialY = 8.0f;
-    //lado de cada cuadrante
-    float unit = 16.0f/ (cols>rows?cols:rows);
+
+    float unit = 16.0f / rows;
+    float initialX = .5f;
+    float initialY = unit * cols + .5f;
 
     glColor3f(1,1,1);
     glBegin(GL_LINE_LOOP);
-    glVertex2f(-8.5f,-8.5f);
-    glVertex2f(8.5f,-8.5f);
-    glVertex2f(8.5,8.5);
-    glVertex2f(-8.5f,8.5);
+    glVertex2f(0, 0);
+    glVertex2f(unit * rows + 1, 0);
+    glVertex2f(unit * rows + 1, unit * cols + 1);
+    glVertex2f(0, unit * cols + 1);
     glEnd();
 
     Room* room;
@@ -101,7 +100,6 @@ void Map::show()
                     drawSquare(glm::vec2(x-0.1*unit , y-0.5*unit),glm::vec2(x+.1*unit, y-.45*unit));
                 if (room->getDoor(0)) //west
                     drawSquare(glm::vec2(x-0.5*unit , y-.1*unit),glm::vec2(x-.45*unit, y+.1*unit));
-                //cout<<r<<" "<<c<<" "<<room<<endl;
             }
         }
     }
