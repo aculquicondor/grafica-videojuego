@@ -2,7 +2,7 @@
 
 
 Game::Game(int &argc, char **argv) :
-        width(1000), height(700), mapShow(false), map(new Map(10, 6)) {
+        width(1000), height(700), mapShow(false), map(new Map(7, 5)) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(width, height);
@@ -14,7 +14,7 @@ Game::Game(int &argc, char **argv) :
 
 void Game::newGame() {
     delete map;
-    map = new Map(10, 6);
+    map = new Map(7, 5);
 }
 
 

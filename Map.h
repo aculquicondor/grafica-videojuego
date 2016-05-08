@@ -25,7 +25,7 @@ private:
     std::default_random_engine random_engine;
 
     bool valid(int r, int c);
-    void dfs(int r, int c, int dir);
+    void dfs(int r, int c, int dir, double prob);
     static const int dr[], dc[];
     void drawSquare(glm::vec2, glm::vec2);
 };

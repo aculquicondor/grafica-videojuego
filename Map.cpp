@@ -14,7 +14,7 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
 
     start_r = std::uniform_int_distribution<int>(0, rows - 1)(random_engine);
     start_c = std::uniform_int_distribution<int>(0, cols - 1)(random_engine);
-    dfs(start_r, start_c, 0);
+    dfs(start_r, start_c, 0, 1);
 }
 
 
@@ -33,7 +33,7 @@ bool Map::valid(int r, int c) {
 }
 
 
-void Map::dfs(int r, int c, int dir) {
+void Map::dfs(int r, int c, int dir, double prob) {
     exit_r = r;
     exit_c = c;
     int nr, nc;
@@ -43,9 +43,10 @@ void Map::dfs(int r, int c, int dir) {
         nr = r + dr[j];
         nc = c + dc[j];
         if (valid(nr, nc) and
-                std::uniform_real_distribution<double>()(random_engine) < (((dir ^ j) & 1) ? .25 : .75)) {
+                std::uniform_real_distribution<double>()(random_engine) <
+                        (((dir ^ j) & 1) ? prob * .5 : prob)) {
             if (map[nr][nc] == nullptr)
-                dfs(nr, nc, j);
+                dfs(nr, nc, j, prob * .9);
             map[r][c]->setDoor(j);
             map[nr][nc]->setDoor((j + 2) % 4);
         }
