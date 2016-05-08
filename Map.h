@@ -3,9 +3,11 @@
 
 #include <random>
 #include <iostream>
-
 #include "Room.h"
+#include "glm/vec2.hpp"
 
+
+using namespace std;
 
 class Map {
 public:
@@ -13,6 +15,7 @@ public:
     virtual ~Map();
     int getRows() const;
     int getColumns() const;
+    void show();
 
 private:
     Room ***map;
@@ -24,6 +27,7 @@ private:
     bool valid(int r, int c);
     void dfs(int r, int c, int dir);
     static const int dr[], dc[];
+    void drawSquare(glm::vec2, glm::vec2);
 };
 
 
