@@ -10,7 +10,7 @@ find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(FreeImage REQUIRED)
 
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${FreeImage_INCLUDE_DIRS})
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${FREEIMAGE_INCLUDE_DIRS})
 
 set(SOURCE_FILES main.cpp
         Player.cpp Player.h
@@ -19,4 +19,4 @@ set(SOURCE_FILES main.cpp
         Game.cpp Game.h
         TextureManager.cpp TextureManager.h)
 add_executable(videogame ${SOURCE_FILES})
-target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FreeImage_LIBRARIES})
+target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})
