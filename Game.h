@@ -1,5 +1,5 @@
-#ifndef VIDEOGAME_GUI_H
-#define VIDEOGAME_GUI_H
+#ifndef VIDEOGAME_GAME_H
+#define VIDEOGAME_GAME_H
 
 #include <GL/glut.h>
 
@@ -29,4 +29,4 @@ private:
 };
 
 
-#endif //VIDEOGAME_GUI_H
+#endif //VIDEOGAME_GAME_H
