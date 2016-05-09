@@ -10,6 +10,7 @@ Game *game;
 int main(int argc, char *argv[]) {
     game = new Game(argc, argv);
 
+    glutIgnoreKeyRepeat(1);
     glutDisplayFunc([]() {
         game->mainLoop();
     });
@@ -17,7 +18,16 @@ int main(int argc, char *argv[]) {
         game->reshape(w, h);
     });
     glutKeyboardFunc([](unsigned char c, int x, int y) {
-        game->key(c, x, y);
+        game->keyDown(c, x, y);
+    });
+    glutKeyboardUpFunc([](unsigned char c, int x, int y) {
+        game->keyUp(c, x, y);
+    });
+    glutSpecialFunc([](int c, int x, int y) {
+        game->specialDown(c, x, y);
+    });
+    glutSpecialUpFunc([](int c, int x, int y) {
+        game->specialUp(c, x, y);
     });
 
     glutIdleFunc([]() {

@@ -1,6 +1,8 @@
 #ifndef VIDEOGAME_GAMESTATE_H
 #define VIDEOGAME_GAMESTATE_H
 
+#include <GL/glut.h>
+
 #include "Model.h"
 
 class Player {
@@ -8,11 +10,15 @@ public:
     Player();
     ~Player();
 
-    void draw() const;
+    void draw(float time);
+    void specialDown(int key);
+    void specialUp(int key);
 
 private:
     int live_points;
-    int room_row, room_col;
+    float x, z;
+    float mv_x, mv_z;
+    static const float speed;
 
     Model *model;
 };

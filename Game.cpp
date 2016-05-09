@@ -10,6 +10,7 @@ Game::Game(int &argc, char **argv) :
     glutCreateWindow("Maze");
 
     initGL();
+    prev_time = std::chrono::system_clock::now();
 }
 
 
@@ -31,12 +32,14 @@ void Game::mainLoop() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    new_time = std::chrono::system_clock::now();
+    float delta_time = (std::chrono::duration<float>(new_time - prev_time).count());
 
     glViewport(0, 0, width, height);
     gluPerspective(1, (double) width / height, 1, 100);
-    gluLookAt(0, 5, 5, 0, 0, 0, 0, 1, 0);
+    gluLookAt(0, 20, 40, 0, 0, 0, 0, 1, 0);
 
-    player->draw();
+    player->draw(delta_time);
 
     if (mapShow) {
         glLoadIdentity();
@@ -47,6 +50,8 @@ void Game::mainLoop() {
 
     glutSwapBuffers();
     glFlush();
+
+    prev_time = new_time;
 }
 
 void Game::reshape(GLsizei width, GLsizei height) {
@@ -59,10 +64,24 @@ void Game::reshape(GLsizei width, GLsizei height) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Game::key(unsigned char key, int x, int y) {
+void Game::keyDown(unsigned char key, int x, int y) {
     if (key == 'm') {
         mapShow = not mapShow;
     } else if (key == 'r') {
         newGame();
     }
+}
+
+
+void Game::keyUp(unsigned char key, int x, int y) {
+}
+
+
+void Game::specialDown(int key, int x, int y) {
+    player->specialDown(key);
+}
+
+
+void Game::specialUp(int key, int x, int y) {
+    player->specialUp(key);
 }

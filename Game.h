@@ -2,6 +2,7 @@
 #define VIDEOGAME_GAME_H
 
 #include <cmath>
+#include <chrono>
 
 #include <GL/glut.h>
 
@@ -17,7 +18,11 @@ public:
 
     void reshape(GLsizei width, GLsizei height);
 
-    void key(unsigned char key, int x, int y);
+    void keyDown(unsigned char key, int x, int y);
+    void keyUp(unsigned char key, int x, int y);
+
+    void specialDown(int key, int x, int y);
+    void specialUp(int key, int x, int y);
 
     void newGame();
 
@@ -30,6 +35,7 @@ private:
 
     Map *map;
     Player *player;
+    std::chrono::time_point<std::chrono::system_clock> prev_time, new_time;
 };
 
 
