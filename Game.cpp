@@ -14,6 +14,7 @@ Game::Game(int &argc, char **argv) :
 
     row = map->startRow();
     col = map->startCol();
+    map->room(row, col)->discover();
 }
 
 
@@ -53,6 +54,7 @@ void Game::mainLoop() {
         row += Map::dr[where - 2];
         col += Map::dc[where - 2];
         room = map->room(row, col);
+        room->discover();
     }
 
     room->draw();

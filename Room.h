@@ -30,8 +30,18 @@ public:
 
     static const float width;
 
+    void discover() {
+        _seen = true;
+    }
+
+    bool seen() const {
+        return _seen;
+    }
+
 private:
+    bool _seen;
     bool doors[];
+
     void drawHexahedron(glm::vec3,glm::vec3);
 
     static const float doorWidth;

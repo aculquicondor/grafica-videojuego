@@ -1,7 +1,7 @@
 #include "Room.h"
 
 
-Room::Room() {
+Room::Room() : _seen(false) {
     for (int i = 0; i < 4; ++i)
         this->doors[i] = 0;
 }

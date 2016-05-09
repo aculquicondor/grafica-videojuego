@@ -85,7 +85,7 @@ void Map::draw(Room *currRoom)
     Room* room;
     for (int r=0 ; r<rows; ++r){
         for (int c=0 ; c<cols ; ++c) {
-            if (map[r][c]) {
+            if (map[r][c] and map[r][c]->seen()) {
                 x = initialX + c * unit + unit*0.5f;
                 y = initialY - r * unit - unit*0.5f;
                 if (map[r][c] == currRoom)
