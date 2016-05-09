@@ -3,6 +3,7 @@
 
 Game::Game(int &argc, char **argv) :
         width(1000), height(700), mapShow(false),
+        graceTime(0),
         map(new Map(5, 7)), player(new Player) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -23,6 +24,7 @@ void Game::newGame() {
     map = new Map(5, 7);
     row = map->startRow();
     col = map->startCol();
+    map->room(row, col)->discover();
     player->reset();
 }
 
@@ -37,6 +39,7 @@ void Game::initGL() {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
+#include <iostream>
 void Game::mainLoop() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -60,6 +63,17 @@ void Game::mainLoop() {
         room->discover();
     }
     player_pos = player->move(where);
+
+    graceTime -= delta_time;
+    if (where == COLLISION and graceTime <= 0) {
+        graceTime = 1;
+        if (not player->attack()) {
+            newGame();
+            room = map->room(row, col);
+        } else {
+            std::cout << player->livePoints() << std::endl;
+        }
+    }
 
     room->draw();
     room->update(delta_time, player_pos, Player::radius);

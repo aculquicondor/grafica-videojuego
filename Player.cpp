@@ -2,6 +2,7 @@
 
 Player::Player() :
         x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0),
+        live_points(6),
         model(Model::getModel("pikachu")) {
 }
 
@@ -44,6 +45,11 @@ void Player::reset() {
     x = 0;
     z = 0;
     angle = 0;
+    live_points = 6;
+}
+
+bool Player::attack() {
+    return --live_points > 0;
 }
 
 void Player::draw() {

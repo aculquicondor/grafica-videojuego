@@ -20,6 +20,12 @@ public:
     void reset();
     glm::vec3 position() const;
 
+    bool attack();
+
+    int livePoints() {
+        return live_points;
+    }
+
     static const float radius;
 private:
     static const float speed;

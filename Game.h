@@ -34,6 +34,7 @@ private:
     GLsizei width, height;
 
     int row, col;
+    float graceTime;
 
     Map *map;
     Player *player;
