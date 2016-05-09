@@ -1,9 +1,12 @@
 #ifndef VIDEOGAME_GAME_H
 #define VIDEOGAME_GAME_H
 
+#include <cmath>
+
 #include <GL/glut.h>
 
 #include "Map.h"
+#include "Player.h"
 
 
 class Game {
@@ -26,6 +29,7 @@ private:
     GLsizei width, height;
 
     Map *map;
+    Player *player;
 };
 
 

@@ -2,7 +2,8 @@
 
 
 Game::Game(int &argc, char **argv) :
-        width(1000), height(700), mapShow(false), map(new Map(7, 5)) {
+        width(1000), height(700), mapShow(false),
+        map(new Map(7, 5)), player(new Player) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(width, height);
@@ -23,6 +24,7 @@ void Game::initGL() {
     glMatrixMode(GL_PROJECTION);
     glEnable(GL_DEPTH_TEST);
     glLoadIdentity();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void Game::mainLoop() {
@@ -31,7 +33,10 @@ void Game::mainLoop() {
     glLoadIdentity();
 
     glViewport(0, 0, width, height);
-    /* Draw room */
+    gluPerspective(1, (double) width / height, 1, 100);
+    gluLookAt(0, 5, 5, 0, 0, 0, 0, 1, 0);
+
+    player->draw();
 
     if (mapShow) {
         glLoadIdentity();

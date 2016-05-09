@@ -17,6 +17,7 @@ set(SOURCE_FILES main.cpp
         Map.cpp Map.h
         Room.cpp Room.h
         Game.cpp Game.h
-        TextureManager.cpp TextureManager.h)
+        TextureManager.cpp TextureManager.h
+        Model.cpp Model.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})
