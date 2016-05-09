@@ -6,22 +6,27 @@
 #define VIDEOGAME_RATACATE_H
 
 
+#include <cmath>
+
 #include "Enemy.h"
 #include <glm/glm.hpp>
 #include <GL/glut.h>
-#include <math.h>
 
 
-class Ratacate : Enemy
+class Raticate : public Enemy
 {
 public:
-    Ratacate(glm::vec3 _pos_actual);
-    static const float radio = 1f;
-    glm::vec3 pos_actual;
-    void Step(glm::vec3 pos_player, float time);
-    void Draw();
+    Raticate(glm::vec3 _pos_actual);
+    static const float radio;
+    void step(float time, glm::vec3 pos_player);
+    void draw();
+
+private:
     float speed;
     glm::vec3 direction;
+    glm::vec3 pos_actual;
+
+    Model *model;
 };
 
 

@@ -22,6 +22,6 @@ set(SOURCE_FILES main.cpp
         TextureManager.cpp TextureManager.h
         Model.cpp Model.h
         Enemy.h
-        Ratacate.cpp Ratacate.h)
+        Raticate.cpp Raticate.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})
