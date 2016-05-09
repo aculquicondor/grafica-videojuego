@@ -76,5 +76,10 @@ void Player::specialUp(int key) {
 }
 
 
+glm::vec3 Player::position() const {
+    return glm::vec3(x, 0, z);
+}
+
+
 const float Player::speed = 8.f;
 const float Player::radius = 1.f;

@@ -18,6 +18,7 @@ set(SOURCE_FILES main.cpp
         Room.cpp Room.h
         Game.cpp Game.h
         TextureManager.cpp TextureManager.h
-        Model.cpp Model.h)
+        Model.cpp Model.h
+        Enemy.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})

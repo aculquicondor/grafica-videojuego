@@ -17,6 +17,7 @@ public:
     void specialUp(int key);
 
     void reset();
+    glm::vec3 position() const;
 
 private:
     static const float speed;
