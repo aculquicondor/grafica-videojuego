@@ -20,6 +20,27 @@ bool Room::getDoor(int id) {
     return doors[id];
 }
 
+RoomWhere Room::where(float x, float z, float radius) const {
+    if (x + radius > Room::width) {
+        if (doors[1] and abs(z) < doorWidth)
+            return E_DOOR;
+        return CANT_BE;
+    } if (x - radius < -Room::width) {
+        if (doors[3] and abs(z) < doorWidth)
+            return W_DOOR;
+        return CANT_BE;
+    } if (z + radius > Room::width) {
+        if (doors[2] and abs(x) < doorWidth)
+            return S_DOOR;
+        return CANT_BE;
+    } if (z - radius < -Room::width) {
+        if (doors[0] and abs(x) < doorWidth)
+            return N_DOOR;
+        return CANT_BE;
+    }
+    return CAN_BE;
+}
+
 void Room::draw(){
 
     float unit = 1.0;
@@ -109,3 +130,7 @@ void Room::drawHexahedron(glm::vec3 lower,glm::vec3 upper) {
 
     glEnd();
 }
+
+const float Room::width = 15;
+
+const float Room::doorWidth = .8f;

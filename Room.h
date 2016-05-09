@@ -1,9 +1,19 @@
 #ifndef VIDEOGAME_ROOM_H
 #define VIDEOGAME_ROOM_H
 
+#include <cmath>
+
 #include <GL/glut.h>
 #include <glm/vec3.hpp>
 
+enum RoomWhere {
+    CANT_BE,
+    CAN_BE,
+    N_DOOR,
+    E_DOOR,
+    S_DOOR,
+    W_DOOR,
+};
 
 class Room {
 public:
@@ -14,11 +24,17 @@ public:
     void setDoor(int id, bool value = true);
     bool getDoor(int id);
 
+    RoomWhere where(float x, float z, float radius) const;
+
     void draw();
+
+    static const float width;
+
 private:
     bool doors[];
     void drawHexahedron(glm::vec3,glm::vec3);
 
+    static const float doorWidth;
 };
 
 

@@ -9,13 +9,37 @@ Player::~Player() {
     delete model;
 }
 
-void Player::draw(float time) {
-    x += mv_x * time;
-    z += mv_z * time;
+RoomWhere Player::move(float time, const Room *room) {
+    float nx = x + mv_x * speed * time, nz = z + mv_z * speed * time;
+    RoomWhere where = room->where(nx, nz, radius);
+    if (where == CAN_BE) {
+        x = nx;
+        z = nz;
+    } else if (where == N_DOOR) {
+        z = Room::width - radius;
+    } else if (where == S_DOOR) {
+        z = -Room::width + radius;
+    } else if (where == E_DOOR) {
+        x = -Room::width + radius;
+    } else if (where == W_DOOR) {
+        x = Room::width - radius;
+    }
 
+    if (mv_x != 0) {
+        angle = mv_x * 90;
+        angle -= mv_x * mv_z * 45;
+    } else if (mv_z != 0) {
+        angle = 90 - mv_z * 90;
+    }
+
+    return where;
+}
+
+void Player::draw() {
     glPushMatrix();
     glTranslated(x, 0, z);
-    glScalef(.005f, .005f, .005f);
+    glRotated(angle, 0, 1, 0);
+    glScalef(.05f, .05f, .05f);
     model->draw();
     glPopMatrix();
 }
@@ -23,16 +47,16 @@ void Player::draw(float time) {
 
 void Player::specialDown(int key) {
     if (key == GLUT_KEY_UP) {
-        mv_z = -speed;
+        mv_z = -1;
         ++topDown;
     } else if (key == GLUT_KEY_DOWN) {
-        mv_z = speed;
+        mv_z = 1;
         ++topDown;
     } else if (key == GLUT_KEY_RIGHT) {
-        mv_x = speed;
+        mv_x = 1;
         ++leftRight;
     } else if (key == GLUT_KEY_LEFT) {
-        mv_x = -speed;
+        mv_x = -1;
         ++leftRight;
     }
 }
@@ -45,4 +69,5 @@ void Player::specialUp(int key) {
 }
 
 
-const float Player::speed = .5f;
+const float Player::speed = 8.f;
+const float Player::radius = 1.f;

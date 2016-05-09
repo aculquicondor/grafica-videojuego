@@ -66,7 +66,7 @@ const int Map::dr[] = {-1, 0, 1, 0};
 const int Map::dc[] = {0, 1, 0, -1};
 
 
-void Map::show()
+void Map::draw(Room *currRoom)
 {
     float x,y;
 
@@ -88,7 +88,7 @@ void Map::show()
             if (map[r][c]) {
                 x = initialX + c * unit + unit*0.5f;
                 y = initialY - r * unit - unit*0.5f;
-                if (r == start_r and c == start_c)
+                if (map[r][c] == currRoom)
                     glColor3f(.3f, .3f, .6f);
                 else
                     glColor3f(1.0, .5f, 0.0f);

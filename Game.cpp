@@ -44,16 +44,25 @@ void Game::mainLoop() {
 
     glViewport(0, 0, width, height);
     gluPerspective(60, (double) width / height, 1, 100);
-    gluLookAt(0, 20, 40, 0, 0, 0, 0, 1, 0);
+    gluLookAt(0, 25, 25, 0, 0, 0, 0, 1, 0);
 
-    map->room(row, col)->draw();
-    // player->draw(delta_time);
+    Room *room = map->room(row, col);
+
+    RoomWhere where = player->move(delta_time, room);
+    if (where > CAN_BE) {
+        row += Map::dr[where - 2];
+        col += Map::dc[where - 2];
+        room = map->room(row, col);
+    }
+
+    room->draw();
+    player->draw();
 
     if (mapShow) {
         glLoadIdentity();
         glViewport(width - 400, 0, 400, 400);
         glOrtho(0, 17, 0, 17, -1, 1);
-        map->show();
+        map->draw(room);
     }
 
     glutSwapBuffers();
