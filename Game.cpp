@@ -23,6 +23,7 @@ void Game::newGame() {
     map = new Map(5, 7);
     row = map->startRow();
     col = map->startCol();
+    player->reset();
 }
 
 

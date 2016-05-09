@@ -16,6 +16,8 @@ public:
     void specialDown(int key);
     void specialUp(int key);
 
+    void reset();
+
 private:
     static const float speed;
     static const float radius;

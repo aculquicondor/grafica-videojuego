@@ -35,6 +35,13 @@ RoomWhere Player::move(float time, const Room *room) {
     return where;
 }
 
+
+void Player::reset() {
+    x = 0;
+    z = 0;
+    angle = 0;
+}
+
 void Player::draw() {
     glPushMatrix();
     glTranslated(x, 0, z);
