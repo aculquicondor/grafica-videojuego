@@ -11,7 +11,8 @@ public:
     Player();
     ~Player();
 
-    RoomWhere move(float time, const Room *room);
+    glm::vec3 moveTest(float time);
+    glm::vec3 move(float time, RoomWhere where);
     void draw();
     void specialDown(int key);
     void specialUp(int key);
@@ -19,9 +20,9 @@ public:
     void reset();
     glm::vec3 position() const;
 
+    static const float radius;
 private:
     static const float speed;
-    static const float radius;
 
     int live_points;
     float x, z;

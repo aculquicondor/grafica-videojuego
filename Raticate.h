@@ -8,9 +8,11 @@
 
 #include <cmath>
 
-#include "Enemy.h"
 #include <glm/glm.hpp>
 #include <GL/glut.h>
+
+#include "Enemy.h"
+#include "Model.h"
 
 
 class Raticate : public Enemy

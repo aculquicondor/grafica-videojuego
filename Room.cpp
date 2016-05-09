@@ -1,9 +1,16 @@
 #include "Room.h"
 
 
-Room::Room() : _seen(false) {
+Room::Room() : _seen(false), random_engine(std::random_device()()) {
     for (int i = 0; i < 4; ++i)
         this->doors[i] = 0;
+
+    int num_enemies = std::uniform_int_distribution<int>(0, 4)(random_engine);
+    for (int i = 0; i < num_enemies; ++i) {
+        float x = std::uniform_real_distribution<float>(-width, width)(random_engine),
+              z = std::uniform_real_distribution<float>(-width, width)(random_engine);
+        enemies.push_back(new Raticate(glm::vec3(x, 0, z)));
+    }
 }
 
 
@@ -39,6 +46,11 @@ RoomWhere Room::where(float x, float z, float radius) const {
         return CANT_BE;
     }
     return CAN_BE;
+}
+
+void Room::update(float time, glm::vec3 player_pos, float player_radius) {
+    for (Enemy *enemy : enemies)
+        enemy->step(time, player_pos);
 }
 
 void Room::draw(){
@@ -90,6 +102,9 @@ void Room::draw(){
         drawHexahedron(glm::vec3(-side-unit,0,-unit),glm::vec3(-side-3*unit,3*unit,-2*unit));
     }else
         drawHexahedron(glm::vec3(-side-unit,0,side),glm::vec3(-side,3*unit,-side));
+
+    for (Enemy *enemy : enemies)
+        enemy->draw();
 }
 
 void Room::drawHexahedron(glm::vec3 lower,glm::vec3 upper) {

@@ -2,18 +2,14 @@
 #define VIDEOGAME_ROOM_H
 
 #include <cmath>
+#include <list>
+#include <random>
 
 #include <GL/glut.h>
 #include <glm/vec3.hpp>
 
-enum RoomWhere {
-    CANT_BE,
-    CAN_BE,
-    N_DOOR,
-    E_DOOR,
-    S_DOOR,
-    W_DOOR,
-};
+#include "RoomWhere.h"
+#include "Raticate.h"
 
 class Room {
 public:
@@ -34,11 +30,16 @@ public:
         _seen = true;
     }
 
+    void update(float time, glm::vec3 player_pos, float player_radius);
+
     bool seen() const {
         return _seen;
     }
 
 private:
+    std::list<Enemy *> enemies;
+    std::default_random_engine random_engine;
+
     bool _seen;
     bool doors[];
 

@@ -50,7 +50,10 @@ void Game::mainLoop() {
 
     Room *room = map->room(row, col);
 
-    RoomWhere where = player->move(delta_time, room);
+    glm::vec3 player_pos = player->moveTest(delta_time);
+    RoomWhere where = room->where(player_pos.x, player_pos.z, Player::radius);
+
+    player_pos = player->move(delta_time, where);
     if (where > CAN_BE) {
         row += Map::dr[where - 2];
         col += Map::dc[where - 2];
@@ -59,6 +62,7 @@ void Game::mainLoop() {
     }
 
     room->draw();
+    room->update(delta_time, player_pos, Player::radius);
     player->draw();
 
     if (mapShow) {

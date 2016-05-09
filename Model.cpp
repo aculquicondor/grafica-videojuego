@@ -38,7 +38,6 @@ Model::Model(const std::string filename) {
 }
 
 void Model::draw() const {
-    glColor3f(1, 1, 0);
     glBegin(GL_TRIANGLES);
     for (std::size_t i = 0; i < vertexIndices.size(); ++i) {
         const glm::vec3 &vertex = vertices[vertexIndices[i]];

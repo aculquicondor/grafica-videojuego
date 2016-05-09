@@ -7,16 +7,16 @@
 Raticate::Raticate(glm::vec3 _pos_actual) :
         model(Model::getModel("raticate")) {
     pos_actual = _pos_actual;
-    speed = 4;
+    speed = 3;
 }
 
 
 void Raticate::draw()
 {
     glPushMatrix();
-    glColor3f(0.0f, 1.0f, 0.0f);
     glTranslatef(pos_actual.x, 0, pos_actual.z);
-    glScalef(.05f, .05f, .05f);
+    glScalef(.5f, .5f, .5f);
+    glColor3f(.2f, .8f, .2f);
     model->draw();
     glPopMatrix();
 }

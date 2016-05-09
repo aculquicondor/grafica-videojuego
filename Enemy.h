@@ -1,8 +1,6 @@
 #ifndef VIDEOGAME_ENEMY_H
 #define VIDEOGAME_ENEMY_H
 
-#include "Player.h"
-
 
 class Enemy {
 public:

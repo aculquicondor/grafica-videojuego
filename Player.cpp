@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player() :
-        x(0), z(0), topDown(0), leftRight(0),
+        x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0),
         model(Model::getModel("pikachu")) {
 }
 
@@ -9,9 +9,12 @@ Player::~Player() {
     delete model;
 }
 
-RoomWhere Player::move(float time, const Room *room) {
+glm::vec3 Player::moveTest(float time) {
+    return glm::vec3(x + mv_x * speed * time, 0, z + mv_z * speed * time);
+}
+
+glm::vec3 Player::move(float time, RoomWhere where) {
     float nx = x + mv_x * speed * time, nz = z + mv_z * speed * time;
-    RoomWhere where = room->where(nx, nz, radius);
     if (where == CAN_BE) {
         x = nx;
         z = nz;
@@ -32,7 +35,7 @@ RoomWhere Player::move(float time, const Room *room) {
         angle = 90 - mv_z * 90;
     }
 
-    return where;
+    return glm::vec3(x, 0, z);
 }
 
 
@@ -47,6 +50,7 @@ void Player::draw() {
     glTranslated(x, 0, z);
     glRotated(angle, 0, 1, 0);
     glScalef(.05f, .05f, .05f);
+    glColor3f(1, 1, 0);
     model->draw();
     glPopMatrix();
 }
