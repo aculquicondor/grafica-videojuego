@@ -2,7 +2,7 @@
 
 Player::Player() :
         x(0), z(0), topDown(0), leftRight(0),
-        model(new Model("models/pikachu.obj")) {
+        model(Model::getModel("pikachu")) {
 }
 
 Player::~Player() {

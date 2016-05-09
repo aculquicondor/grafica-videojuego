@@ -46,3 +46,13 @@ void Model::draw() const {
     }
     glEnd();
 }
+
+
+Model *Model::getModel(std::string name) {
+    if (models.find(name) == models.end())
+        return models[name] = new Model("models/" + name + ".obj");
+    return models[name];
+}
+
+
+std::map<std::string, Model *> Model::models;
