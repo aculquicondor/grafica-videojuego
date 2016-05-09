@@ -3,6 +3,8 @@ project(videogame)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+set(FREEIMAGE_ROOT "C:\\MinGW\\include\\freeimage")
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/")
 
 find_package(OpenGL REQUIRED)
@@ -19,6 +21,7 @@ set(SOURCE_FILES main.cpp
         Game.cpp Game.h
         TextureManager.cpp TextureManager.h
         Model.cpp Model.h
-        Enemy.h)
+        Enemy.h
+        Ratacate.cpp Ratacate.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})
