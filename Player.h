@@ -20,6 +20,9 @@ private:
     float mv_x, mv_z;
     static const float speed;
 
+    int topDown;
+    int leftRight;
+
     Model *model;
 };
 

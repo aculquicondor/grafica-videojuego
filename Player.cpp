@@ -1,7 +1,8 @@
 #include "Player.h"
 
 Player::Player() :
-        x(0), z(0), model(new Model("models/pikachu.obj")) {
+        x(0), z(0), topDown(0), leftRight(0),
+        model(new Model("models/pikachu.obj")) {
 }
 
 Player::~Player() {
@@ -21,20 +22,25 @@ void Player::draw(float time) {
 
 
 void Player::specialDown(int key) {
-    if (key == GLUT_KEY_UP)
+    if (key == GLUT_KEY_UP) {
         mv_z = -speed;
-    else if (key == GLUT_KEY_DOWN)
+        ++topDown;
+    } else if (key == GLUT_KEY_DOWN) {
         mv_z = speed;
-    else if (key == GLUT_KEY_RIGHT)
+        ++topDown;
+    } else if (key == GLUT_KEY_RIGHT) {
         mv_x = speed;
-    else if (key == GLUT_KEY_LEFT)
+        ++leftRight;
+    } else if (key == GLUT_KEY_LEFT) {
         mv_x = -speed;
+        ++leftRight;
+    }
 }
 
 void Player::specialUp(int key) {
-    if (key == GLUT_KEY_UP || key == GLUT_KEY_DOWN)
+    if ((key == GLUT_KEY_UP || key == GLUT_KEY_DOWN) && (--topDown) == 0)
         mv_z = 0;
-    else if (key == GLUT_KEY_LEFT || key == GLUT_KEY_RIGHT)
+    else if ((key == GLUT_KEY_LEFT || key == GLUT_KEY_RIGHT) && (--leftRight) == 0)
         mv_x = 0;
 }
 
