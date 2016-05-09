@@ -17,6 +17,23 @@ public:
     int getColumns() const;
     void show();
 
+    int startRow() const {
+        return start_r;
+    }
+    int startCol() const {
+        return start_c;
+    }
+    int exitRow() const {
+        return exit_r;
+    }
+    int exitCol() const {
+        return exit_c;
+    }
+
+    Room *room(int r, int c) {
+        return map[r][c];
+    }
+
 private:
     Room ***map;
     int rows, cols;

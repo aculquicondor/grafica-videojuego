@@ -3,20 +3,25 @@
 
 Game::Game(int &argc, char **argv) :
         width(1000), height(700), mapShow(false),
-        map(new Map(7, 5)), player(new Player) {
+        map(new Map(5, 7)), player(new Player) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(width, height);
     glutCreateWindow("Maze");
 
     initGL();
     prev_time = std::chrono::system_clock::now();
+
+    row = map->startRow();
+    col = map->startCol();
 }
 
 
 void Game::newGame() {
     delete map;
-    map = new Map(7, 5);
+    map = new Map(5, 7);
+    row = map->startRow();
+    col = map->startCol();
 }
 
 
@@ -24,8 +29,10 @@ void Game::initGL() {
     glClearColor(0, 0, 0, 0);
     glMatrixMode(GL_PROJECTION);
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
     glLoadIdentity();
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void Game::mainLoop() {
@@ -36,10 +43,11 @@ void Game::mainLoop() {
     float delta_time = (std::chrono::duration<float>(new_time - prev_time).count());
 
     glViewport(0, 0, width, height);
-    gluPerspective(1, (double) width / height, 1, 100);
+    gluPerspective(60, (double) width / height, 1, 100);
     gluLookAt(0, 20, 40, 0, 0, 0, 0, 1, 0);
 
-    player->draw(delta_time);
+    map->room(row, col)->draw();
+    // player->draw(delta_time);
 
     if (mapShow) {
         glLoadIdentity();

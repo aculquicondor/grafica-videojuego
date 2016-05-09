@@ -33,6 +33,8 @@ private:
 
     GLsizei width, height;
 
+    int row, col;
+
     Map *map;
     Player *player;
     std::chrono::time_point<std::chrono::system_clock> prev_time, new_time;

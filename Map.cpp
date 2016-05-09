@@ -2,7 +2,7 @@
 
 
 Map::Map(int rows, int cols) : rows(rows), cols(cols),
-                               random_engine((unsigned int)time(0)) {
+                               random_engine(std::random_device()()) {
     map = new Room**[rows];
     map[0] = new Room*[rows * cols];
     for (int i = 1; i < rows; ++i)
@@ -70,36 +70,39 @@ void Map::show()
 {
     float x,y;
 
-    float unit = 16.0f / rows;
+    float unit = 16.0f / std::max(rows, cols);
     float initialX = .5f;
-    float initialY = unit * cols + .5f;
+    float initialY = unit * rows + .5f;
 
     glColor3f(1,1,1);
     glBegin(GL_LINE_LOOP);
     glVertex2f(0, 0);
-    glVertex2f(unit * rows + 1, 0);
-    glVertex2f(unit * rows + 1, unit * cols + 1);
-    glVertex2f(0, unit * cols + 1);
+    glVertex2f(unit * cols + 1, 0);
+    glVertex2f(unit * cols + 1, unit * rows + 1);
+    glVertex2f(0, unit * rows + 1);
     glEnd();
 
     Room* room;
     for (int r=0 ; r<rows; ++r){
         for (int c=0 ; c<cols ; ++c) {
             if (map[r][c]) {
-                x = initialX + r * unit + unit*0.5f;
-                y = initialY - c * unit - unit*0.5f;
-                glColor3f(1.0, .5f, 0.0f);
+                x = initialX + c * unit + unit*0.5f;
+                y = initialY - r * unit - unit*0.5f;
+                if (r == start_r and c == start_c)
+                    glColor3f(.3f, .3f, .6f);
+                else
+                    glColor3f(1.0, .5f, 0.0f);
                 room = map[r][c];
                 //dibujar habitaciones
                 drawSquare(glm::vec2(x-unit*0.45,y-unit*0.45),glm::vec2(x+unit*0.45,y+unit*0.45));
                 //dibujar pasadizos
-                if (room->getDoor(3)) //north
+                if (room->getDoor(0)) //north
                     drawSquare(glm::vec2(x-0.1*unit , y+.45*unit),glm::vec2(x+0.1*unit , y+0.5*unit));
-                if (room->getDoor(2)) //east
+                if (room->getDoor(1)) //east
                     drawSquare(glm::vec2(x+.45*unit , y-0.1*unit),glm::vec2(x+.5*unit , y+0.1*unit));
-                if (room->getDoor(1)) //south
+                if (room->getDoor(2)) //south
                     drawSquare(glm::vec2(x-0.1*unit , y-0.5*unit),glm::vec2(x+.1*unit, y-.45*unit));
-                if (room->getDoor(0)) //west
+                if (room->getDoor(3)) //west
                     drawSquare(glm::vec2(x-0.5*unit , y-.1*unit),glm::vec2(x-.45*unit, y+.1*unit));
             }
         }
