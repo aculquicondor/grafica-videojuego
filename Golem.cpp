@@ -65,3 +65,5 @@ bool Golem::colition(Room *room, glm::vec3 npos) {
     }
     return true;
 }
+
+const float Golem::radio = 1.5f;
