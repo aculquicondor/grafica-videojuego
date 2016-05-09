@@ -22,11 +22,17 @@ void Raticate::draw()
 }
 
 
-void Raticate::step(float time, glm::vec3 pos_player)
+glm::vec3 Raticate::stepTest(float time, glm::vec3 pos_player)
 {
     glm::vec3 vector = pos_player-pos_actual;
     vector = glm::normalize(vector);
-    pos_actual += vector*speed*time;
+    next_pos = pos_actual + vector*speed*time;
+    return next_pos;
+}
+
+
+void Raticate::step() {
+    pos_actual = next_pos;
 }
 
 

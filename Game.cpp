@@ -53,13 +53,13 @@ void Game::mainLoop() {
     glm::vec3 player_pos = player->moveTest(delta_time);
     RoomWhere where = room->where(player_pos.x, player_pos.z, Player::radius);
 
-    player_pos = player->move(delta_time, where);
     if (where > CAN_BE) {
-        row += Map::dr[where - 2];
-        col += Map::dc[where - 2];
+        row += Map::dr[where - N_DOOR];
+        col += Map::dc[where - N_DOOR];
         room = map->room(row, col);
         room->discover();
     }
+    player_pos = player->move(where);
 
     room->draw();
     room->update(delta_time, player_pos, Player::radius);

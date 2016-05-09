@@ -7,6 +7,7 @@
 
 enum RoomWhere {
     CANT_BE,
+    COLLISION,
     CAN_BE,
     N_DOOR,
     E_DOOR,

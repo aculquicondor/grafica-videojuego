@@ -20,7 +20,7 @@ public:
     void setDoor(int id, bool value = true);
     bool getDoor(int id);
 
-    RoomWhere where(float x, float z, float radius) const;
+    RoomWhere where(float x, float z, float radius, Enemy *enemy = nullptr) const;
 
     void draw();
 

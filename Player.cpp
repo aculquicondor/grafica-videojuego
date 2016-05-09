@@ -10,12 +10,13 @@ Player::~Player() {
 }
 
 glm::vec3 Player::moveTest(float time) {
-    return glm::vec3(x + mv_x * speed * time, 0, z + mv_z * speed * time);
+    nx = x + mv_x * speed * time;
+    nz = z + mv_z * speed * time;
+    return glm::vec3(nx, 0, nz);
 }
 
-glm::vec3 Player::move(float time, RoomWhere where) {
-    float nx = x + mv_x * speed * time, nz = z + mv_z * speed * time;
-    if (where == CAN_BE) {
+glm::vec3 Player::move(RoomWhere where) {
+    if (where == CAN_BE or where == COLLISION) {
         x = nx;
         z = nz;
     } else if (where == N_DOOR) {
@@ -83,7 +84,6 @@ void Player::specialUp(int key) {
 glm::vec3 Player::position() const {
     return glm::vec3(x, 0, z);
 }
-
 
 const float Player::speed = 8.f;
 const float Player::radius = 1.f;

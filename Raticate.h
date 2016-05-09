@@ -20,13 +20,21 @@ class Raticate : public Enemy
 public:
     Raticate(glm::vec3 _pos_actual);
     static const float radio;
-    void step(float time, glm::vec3 pos_player);
+    glm::vec3 stepTest(float time, glm::vec3 pos_player);
+    void step();
     void draw();
+
+    float radius() const {
+        return radio;
+    }
+
+    glm::vec3 position() const {
+        return pos_actual;
+    }
 
 private:
     float speed;
-    glm::vec3 direction;
-    glm::vec3 pos_actual;
+    glm::vec3 pos_actual, next_pos;
 
     Model *model;
 };

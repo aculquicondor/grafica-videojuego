@@ -7,8 +7,8 @@ Room::Room() : _seen(false), random_engine(std::random_device()()) {
 
     int num_enemies = std::uniform_int_distribution<int>(0, 4)(random_engine);
     for (int i = 0; i < num_enemies; ++i) {
-        float x = std::uniform_real_distribution<float>(-width, width)(random_engine),
-              z = std::uniform_real_distribution<float>(-width, width)(random_engine);
+        float x = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine),
+              z = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine);
         enemies.push_back(new Raticate(glm::vec3(x, 0, z)));
     }
 }
@@ -27,7 +27,7 @@ bool Room::getDoor(int id) {
     return doors[id];
 }
 
-RoomWhere Room::where(float x, float z, float radius) const {
+RoomWhere Room::where(float x, float z, float radius, Enemy *enemy) const {
     if (x + radius > Room::width) {
         if (doors[1] and abs(z) < doorWidth)
             return E_DOOR;
@@ -45,12 +45,21 @@ RoomWhere Room::where(float x, float z, float radius) const {
             return N_DOOR;
         return CANT_BE;
     }
+    for (Enemy *other_enemy : enemies)
+        if (other_enemy != enemy) {
+            glm::vec3 p = other_enemy->position();
+            if (glm::length(glm::distance(p, glm::vec3(x, 0, z))) < other_enemy->radius() + radius)
+                return COLLISION;
+        }
     return CAN_BE;
 }
 
 void Room::update(float time, glm::vec3 player_pos, float player_radius) {
-    for (Enemy *enemy : enemies)
-        enemy->step(time, player_pos);
+    for (Enemy *enemy : enemies) {
+        glm::vec3 pos = enemy->stepTest(time, player_pos);
+        if (where(pos.x, pos.z, enemy->radius(), enemy) == CAN_BE)
+            enemy->step();
+    }
 }
 
 void Room::draw(){
