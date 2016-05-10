@@ -12,7 +12,7 @@ Golem::Golem(glm::vec3 pos):
         countDown(1.5),
         random_engine(std::random_device()()),
         rolling(false),
-        model(Model::getModel("raticate")) {
+        model(Model::getModel("golem")) {
     changeDirection();
 }
 
@@ -20,7 +20,7 @@ void Golem::draw()
 {
     glPushMatrix();
     glTranslatef(cPosition.x, 0.0, cPosition.z);
-    glScalef(.5f, .5f, .5f);
+    glScalef(.25f, .25f, .25f);
     glColor3f(.35f, .35f, .2f);
     model->draw();
     glPopMatrix();
