@@ -11,25 +11,35 @@
 
 #include "Enemy.h"
 #include "Room.h"
+#include "Model.h"
 
 
-class Golem : Enemy {
+class Golem : public Enemy {
 public:
     Golem(glm::vec3);
 
-    glm::vec3 position;
-    glm::vec3 direction;
-    float speed;
-    float acumulateT;
-    float rolling;
-
     std::default_random_engine random_engine;
     static const float radio;
-    void step(glm::vec3, float, Room *);
+    glm::vec3 stepTest(float time, glm::vec3 pos_player);
+    void step();
     void draw();
-    glm::vec3 changeDirection();
-    bool colition(Room*, glm::vec3);
-};
 
+    float radius() const {
+        return radio;
+    }
+
+    glm::vec3 position() const {
+        return cPosition;
+    }
+    void reflectDirection();
+private:
+    void changeDirection();
+    float speed;
+    float countDown;
+    bool rolling;
+    glm::vec3 cPosition, nPosition;
+    glm::vec3 direction;
+    Model *model;
+};
 
 #endif //VIDEOGAME_GOLEM_H

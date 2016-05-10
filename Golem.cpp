@@ -5,65 +5,82 @@
 #include "Golem.h"
 
 
-Golem::Golem(glm::vec3 pos): position(pos), speed(3), acumulateT(0),
-                             random_engine(std::random_device()()), rolling(0) {
 
+Golem::Golem(glm::vec3 pos):
+        cPosition(pos),
+        speed(2),
+        countDown(1.5),
+        random_engine(std::random_device()()),
+        rolling(false),
+        model(Model::getModel("raticate")) {
+    changeDirection();
 }
 
-void Golem::draw() {
+void Golem::draw()
+{
     glPushMatrix();
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glTranslatef(position[0], position[1], position[2]);
-    glutSolidSphere(radio, 20, 20);
+    glTranslatef(cPosition.x, 0.0, cPosition.z);
+    glScalef(.5f, .5f, .5f);
+    glColor3f(.35f, .35f, .2f);
+    model->draw();
     glPopMatrix();
 }
 
-void Golem::step(glm::vec3 playerPosition, float time, Room* room) {
-    if (rolling <= 0) //caminando
-    {
-        acumulateT+=time;
-        if (acumulateT > 1)
-            direction = changeDirection();
-        //vision golem
-        float dist = sqrt(pow(playerPosition[0]-position[0],2)+pow(playerPosition[2]-position[2],2));
-        if(dist < 5.0) {
-            float angle = atan2(direction[2],direction[0]);
-            float anglePlayer = atan2(playerPosition[2],playerPosition[0]);
-            if(anglePlayer < angle + 15.0 && anglePlayer > angle - 15.0)
+glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)
+{
+    countDown -= time;
+    if (rolling){ // rodando
+        if (countDown <= 0){
+            changeDirection();
+            countDown = 1.5;
+            speed = 2;
+            rolling = false;
+        }
+    }else{ // caminando
+        if (countDown <= 0){
+            changeDirection();
+            countDown = 1.5;
+        }
+        //  golem vision
+        if(glm::length(glm::distance(playerPosition, cPosition)) < 10.0) {
+            float angle1 = (float)atan2(direction.z,direction.x); //vision
+            float angle2 = (float)atan2(playerPosition.z,playerPosition.x);
+            float dist1 = glm::abs(angle1-angle2);
+            float dist2 = 2*3.14159f - dist1;
+            if(dist1<.9 or dist2<.9) //90º de visionen promedio
             {
-                rolling = 3;
-                speed =  10;
+                rolling = true;
+                speed =  12;
+                countDown = 3;
+                direction =glm::normalize(playerPosition-cPosition);
             }
         }
-        glm::vec3 npos = direction * speed * time;
-        if (colition(room,npos))
-            acumulateT = 1;
-
-    }else{ //rodando
-        rolling -=time;
-        acumulateT = 0;
-        glm::vec3 npos = direction * speed * time;
-        if (colition(room,npos))
-            direction = changeDirection();
     }
+    nPosition = this->position()+direction * speed * time;
+    return nPosition;
 }
 
-glm::vec3 Golem::changeDirection() {
+void Golem::step() {
+    cPosition = nPosition;
+}
+
+void Golem::changeDirection() {
     glm::vec3 dir;
     dir[0] = std::uniform_real_distribution<float>(-1,1 )(random_engine);
     dir[1] = 0;
     dir[2] = std::uniform_real_distribution<float>(-1,1 )(random_engine);
-    return glm::normalize(dir);
+    direction = glm::normalize(dir);
 }
 
-bool Golem::colition(Room *room, glm::vec3 npos) {
-    RoomWhere where = room->where(npos[0], npos[2], radio);
-    if (where == CAN_BE) {
-        position[0] = npos[0];
-        position[2] = npos[2];
-        return false;
-    }
-    return true;
+void Golem::reflectDirection() {
+    if (nPosition.x + radio > Room::width)
+        direction.x *= -1;
+    if (nPosition.x - radio < -Room::width)
+        direction.x *= -1;
+    if (nPosition.z + radio > Room::width)
+        direction.z *= -1;
+    if (nPosition.z - radio < -Room::width)
+        direction.z *= -1;
 }
 
-const float Golem::radio = 1.5f;
+const float Golem::radio = 1.f;
