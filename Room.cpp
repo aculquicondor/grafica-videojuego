@@ -9,7 +9,7 @@ Room::Room() : _seen(false), random_engine(std::random_device()()) {
     for (int i = 0; i < num_enemies; ++i) {
         float x = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine),
               z = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine);
-        enemies.push_back(new Raticate(glm::vec3(x, 0, z)));
+        enemies.push_back(new Golem(glm::vec3(x, 0, z)));
     }
 }
 
@@ -59,6 +59,8 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
         glm::vec3 pos = enemy->stepTest(time, player_pos);
         if (where(pos.x, pos.z, enemy->radius(), enemy) == CAN_BE)
             enemy->step();
+        else
+            enemy->reflectDirection();
     }
 }
 

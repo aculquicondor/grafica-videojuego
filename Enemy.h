@@ -10,6 +10,7 @@ public:
     virtual void draw() = 0;
     virtual float radius() const = 0;
     virtual glm::vec3 position() const = 0;
+    virtual void reflectDirection() = 0;
 };
 
 

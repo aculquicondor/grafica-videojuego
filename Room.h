@@ -10,6 +10,7 @@
 
 #include "RoomWhere.h"
 #include "Raticate.h"
+#include "Golem.h"
 
 class Room {
 public:

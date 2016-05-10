@@ -31,7 +31,7 @@ public:
     glm::vec3 position() const {
         return pos_actual;
     }
-
+    void reflectDirection();
 private:
     float speed;
     glm::vec3 pos_actual, next_pos;

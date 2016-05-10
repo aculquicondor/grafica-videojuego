@@ -35,5 +35,9 @@ void Raticate::step() {
     pos_actual = next_pos;
 }
 
+void Raticate::reflectDirection() {
+    //nothing
+}
+
 
 const float Raticate::radio = 1.f;
