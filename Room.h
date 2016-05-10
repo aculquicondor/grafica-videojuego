@@ -11,6 +11,7 @@
 #include "RoomWhere.h"
 #include "Raticate.h"
 #include "Golem.h"
+#include "Arbok.h"
 
 class Room {
 public:
