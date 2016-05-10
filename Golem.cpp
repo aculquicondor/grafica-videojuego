@@ -44,7 +44,7 @@ glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)
         //  golem vision
         if(glm::length(glm::distance(playerPosition, cPosition)) < 10.0) {
             float angle1 = (float)atan2(direction.z,direction.x); //vision
-            float angle2 = (float)atan2(playerPosition.z,playerPosition.x);
+            float angle2 = (float)atan2(playerPosition.z-direction.z,playerPosition.x-direction.x);
             float dist1 = glm::abs(angle1-angle2);
             float dist2 = 2*3.14159f - dist1;
             if(dist1<.9 or dist2<.9) //90º de visionen promedio
