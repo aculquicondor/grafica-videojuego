@@ -9,7 +9,11 @@ Room::Room() : _seen(false), random_engine(std::random_device()()) {
     for (int i = 0; i < num_enemies; ++i) {
         float x = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine),
               z = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine);
-        enemies.push_back(new Golem(glm::vec3(x, 0, z)));
+        int type = std::uniform_int_distribution<int>(0, 1)(random_engine);
+        if (type == 0)
+            enemies.push_back(new Raticate(glm::vec3(x, 0, z)));
+        else
+            enemies.push_back(new Golem(glm::vec3(x, 0, z)));
     }
 }
 
