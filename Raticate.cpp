@@ -26,7 +26,7 @@ void Raticate::draw()
 glm::vec3 Raticate::stepTest(float time, glm::vec3 pos_player)
 {
     glm::vec3 vector = pos_player - pos_actual;
-    angle = atan2(vector.x, vector.z);
+    angle = glm::atan(vector.x, vector.z);
     vector = glm::normalize(vector);
     next_pos = pos_actual + vector * speed * time;
     return next_pos;

@@ -6,8 +6,6 @@
 #define VIDEOGAME_RATACATE_H
 
 
-#include <cmath>
-
 #include <glm/glm.hpp>
 #include <GL/glut.h>
 

@@ -22,6 +22,7 @@ void Golem::draw()
     glTranslatef(cPosition.x, 0.0, cPosition.z);
     glScalef(.25f, .25f, .25f);
     glColor3f(.35f, .35f, .2f);
+    glRotatef(glm::atan(direction.x, direction.z) * 57.2957f, 0, 1, 0);
     model->draw();
     glPopMatrix();
 }
@@ -43,8 +44,8 @@ glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)
         }
         //  golem vision
         if(glm::length(glm::distance(playerPosition, cPosition)) < 10.0) {
-            float angle1 = (float)atan2(direction.z,direction.x); //vision
-            float angle2 = (float)atan2(playerPosition.z-direction.z,playerPosition.x-direction.x);
+            float angle1 = glm::atan(direction.z,direction.x); //vision
+            float angle2 = glm::atan(playerPosition.z-direction.z,playerPosition.x-direction.x);
             float dist1 = glm::abs(angle1-angle2);
             float dist2 = 2*3.14159f - dist1;
             if(dist1<.9 or dist2<.9) //90º de visionen promedio
