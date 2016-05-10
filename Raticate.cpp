@@ -4,10 +4,9 @@
 
 #include "Raticate.h"
 
-Raticate::Raticate(glm::vec3 _pos_actual) :
+Raticate::Raticate(glm::vec3 pos_actual, float speed) :
+        speed(speed), pos_actual(pos_actual), angle(0),
         model(Model::getModel("raticate")) {
-    pos_actual = _pos_actual;
-    speed = 3;
 }
 
 
@@ -15,8 +14,10 @@ void Raticate::draw()
 {
     glPushMatrix();
     glTranslatef(pos_actual.x, 0, pos_actual.z);
-    glScalef(.5f, .5f, .5f);
+    glScalef(.4f, .4f, .4f);
     glColor3f(.2f, .8f, .2f);
+    glRotatef(angle * 57.2957f, 0, 1, 0);
+    glRotated(90, 1, 0, 0);
     model->draw();
     glPopMatrix();
 }
@@ -24,9 +25,10 @@ void Raticate::draw()
 
 glm::vec3 Raticate::stepTest(float time, glm::vec3 pos_player)
 {
-    glm::vec3 vector = pos_player-pos_actual;
+    glm::vec3 vector = pos_player - pos_actual;
+    angle = atan2(vector.x, vector.z);
     vector = glm::normalize(vector);
-    next_pos = pos_actual + vector*speed*time;
+    next_pos = pos_actual + vector * speed * time;
     return next_pos;
 }
 
