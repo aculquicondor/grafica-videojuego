@@ -2,6 +2,7 @@
 
 
 Room::Room() : _seen(false), random_engine(std::random_device()()) {
+    texture = TextureManager::loadTexture("textures/wall.tga");
     for (int i = 0; i < 4; ++i)
         this->doors[i] = 0;
 
@@ -125,13 +126,20 @@ void Room::draw(){
 }
 
 void Room::drawHexahedron(glm::vec3 lower,glm::vec3 upper) {
-    glBegin(GL_QUADS);
-    // front side
     glColor3f(.6,.6,.6);
+    glBegin(GL_QUADS);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // front side
     glVertex3f(lower[0],lower[1],lower[2]);
+    glTexCoord2f(0, 0);
     glVertex3f(upper[0],lower[1],lower[2]);
+    glTexCoord2f(1, 0);
     glVertex3f(upper[0],upper[1],lower[2]);
+    glTexCoord2f(0, 1);
     glVertex3f(lower[0],upper[1],lower[2]);
+    glTexCoord2f(1, 1);
     // back side
     glVertex3f(lower[0],lower[1],upper[2]);
     glVertex3f(lower[0],upper[1],upper[2]);
@@ -161,6 +169,7 @@ void Room::drawHexahedron(glm::vec3 lower,glm::vec3 upper) {
     glVertex3f(upper[0],upper[1],lower[2]);
 
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 const float Room::width = 15;

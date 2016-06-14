@@ -4,10 +4,11 @@
 #ifndef VIDEOGAME_ARBOK_H
 #define VIDEOGAME_ARBOK_H
 
-#include <GL/glut.h>
-#include <glm/glm.hpp>
-#include "Enemy.h"
 #include <random>
+
+#include <glm/glm.hpp>
+
+#include "Enemy.h"
 #include "Room.h"
 #include "Model.h"
 

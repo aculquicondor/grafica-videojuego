@@ -8,7 +8,7 @@
 
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 
 class Model {

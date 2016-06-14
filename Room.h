@@ -5,13 +5,16 @@
 #include <list>
 #include <random>
 
+#include <GL/glew.h>
 #include <GL/glut.h>
 #include <glm/vec3.hpp>
 
+#include "TextureManager.h"
 #include "RoomWhere.h"
 #include "Raticate.h"
 #include "Golem.h"
 #include "Arbok.h"
+
 
 class Room {
 public:
@@ -42,6 +45,7 @@ private:
     std::list<Enemy *> enemies;
     std::default_random_engine random_engine;
 
+    GLuint texture;
     bool _seen;
     bool doors[];
 

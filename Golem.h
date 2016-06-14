@@ -6,7 +6,6 @@
 
 #include <random>
 
-#include <GL/glut.h>
 #include <glm/glm.hpp>
 
 #include "Enemy.h"

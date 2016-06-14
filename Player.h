@@ -1,10 +1,9 @@
 #ifndef VIDEOGAME_GAMESTATE_H
 #define VIDEOGAME_GAMESTATE_H
 
-#include <GL/glut.h>
-
 #include "Model.h"
 #include "Room.h"
+
 
 class Player {
 public:

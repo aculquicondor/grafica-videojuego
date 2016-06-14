@@ -8,7 +8,7 @@ GLuint TextureManager::loadTexture(const std::string &filename,
     FIBITMAP *dib(0);
     BYTE* bits(0);
     unsigned int width(0), height(0);
-    GLuint textureID;
+    GLuint textureID = 0;
 
     fif = FreeImage_GetFileType(filename.c_str(), 0);
     if(fif == FIF_UNKNOWN)
@@ -33,11 +33,10 @@ GLuint TextureManager::loadTexture(const std::string &filename,
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, image_format, GL_UNSIGNED_BYTE, bits);
 
-
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
     glGenerateMipmap(GL_TEXTURE_2D);
 

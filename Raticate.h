@@ -5,9 +5,8 @@
 #ifndef VIDEOGAME_RATACATE_H
 #define VIDEOGAME_RATACATE_H
 
-
 #include <glm/glm.hpp>
-#include <GL/glut.h>
+#include <GL/glew.h>
 
 #include "Enemy.h"
 #include "Model.h"
