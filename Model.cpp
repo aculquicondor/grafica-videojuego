@@ -29,9 +29,9 @@ Model::Model(const std::string filename) {
                 file >> vertex;
                 unsigned int v, uv, normal;
                 sscanf(vertex.c_str(), "%d/%d/%d", &v, &uv, &normal);
-                vertexIndices.push_back(v);
-                uvIndices.push_back(uv);
-                normalIndices.push_back(normal);
+                vertexIndices.push_back(v - 1);
+                uvIndices.push_back(uv - 1);
+                normalIndices.push_back(normal - 1);
             }
         }
     }
