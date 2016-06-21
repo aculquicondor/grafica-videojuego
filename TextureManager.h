@@ -9,9 +9,16 @@
 
 class TextureManager {
 public:
-    static GLuint loadTexture(const std::string &filename,
-                              GLenum image_format = GL_RGB, GLenum internal_format = GL_RGB,
-                              GLint level = 0, GLint border = 0);
+    GLuint loadTexture(const std::string &filename, GLenum image_format = GL_RGB, GLenum internal_format = GL_RGB,
+                       GLint level = 0, GLint border = 0);
+    static TextureManager &instance();
+private:
+    explicit TextureManager();
+    virtual ~TextureManager();
+    TextureManager(const TextureManager &tm) = delete;
+    TextureManager& operator=(const TextureManager &tm) = delete;
+
+    static TextureManager* _inst;
 };
 
 

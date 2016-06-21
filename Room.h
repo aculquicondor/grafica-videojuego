@@ -18,9 +18,8 @@
 
 class Room {
 public:
-    Room();
+    Room(GLuint texture);
     ~Room();
-    GLint *textures;
 
     void setDoor(int id, bool value = true);
     bool getDoor(int id);
@@ -42,10 +41,10 @@ public:
     }
 
 private:
+    GLuint texture;
     std::list<Enemy *> enemies;
     std::default_random_engine random_engine;
 
-    GLuint texture;
     bool _seen;
     bool doors[];
 

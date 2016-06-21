@@ -1,6 +1,28 @@
 #include "TextureManager.h"
 
 
+TextureManager *TextureManager::_inst(nullptr);
+
+TextureManager &TextureManager::instance() {
+    if (_inst == nullptr)
+        _inst = new TextureManager{};
+    return *_inst;
+}
+
+
+TextureManager::TextureManager() {
+#ifdef FREEIMAGE_LIB
+    FreeImage_Initialise();
+#endif
+}
+
+TextureManager::~TextureManager() {
+#ifdef FREEIMAGE_LIB
+    FreeImage_DeInitialise();
+#endif
+}
+
+
 GLuint TextureManager::loadTexture(const std::string &filename,
                                    GLenum image_format, GLenum internal_format,
                                    GLint level, GLint border) {
@@ -38,7 +60,7 @@ GLuint TextureManager::loadTexture(const std::string &filename,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-    glGenerateMipmap(GL_TEXTURE_2D);
+    // glGenerateMipmap(GL_TEXTURE_2D);
 
     FreeImage_Unload(dib);
 

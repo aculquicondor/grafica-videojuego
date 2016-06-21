@@ -3,6 +3,7 @@
 
 Map::Map(int rows, int cols) : rows(rows), cols(cols),
                                random_engine(std::random_device()()) {
+    room_texture = TextureManager::instance().loadTexture("textures/wall.tga", GL_BGR);
     map = new Room**[rows];
     map[0] = new Room*[rows * cols];
     for (int i = 1; i < rows; ++i)
@@ -37,7 +38,7 @@ void Map::dfs(int r, int c, int dir, double prob) {
     exit_r = r;
     exit_c = c;
     int nr, nc;
-    map[r][c] = new Room();
+    map[r][c] = new Room(room_texture);
     for (int i = 0; i < 4; ++i) {
         int j = (dir + i) % 4;
         nr = r + dr[j];

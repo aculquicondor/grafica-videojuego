@@ -3,8 +3,7 @@
 
 Game::Game(int &argc, char **argv) :
         width(1000), height(700), mapShow(false),
-        graceTime(0),
-        map(new Map(5, 7)), player(new Player) {
+        graceTime(0) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(width, height);
@@ -13,6 +12,8 @@ Game::Game(int &argc, char **argv) :
     initGL();
     prev_time = std::chrono::system_clock::now();
 
+    map = new Map(5, 7);
+    player = new Player();
     row = map->startRow();
     col = map->startCol();
     map->room(row, col)->discover();
@@ -39,7 +40,6 @@ void Game::initGL() {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-#include <iostream>
 void Game::mainLoop() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);

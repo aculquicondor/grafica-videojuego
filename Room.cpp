@@ -1,8 +1,7 @@
 #include "Room.h"
 
 
-Room::Room() : _seen(false), random_engine(std::random_device()()) {
-    texture = TextureManager::loadTexture("textures/wall.tga");
+Room::Room(GLuint texture) : _seen(false), random_engine(std::random_device()()), texture(texture) {
     for (int i = 0; i < 4; ++i)
         this->doors[i] = 0;
 

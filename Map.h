@@ -43,6 +43,7 @@ private:
     int start_r, start_c;
     int exit_r, exit_c;
     std::default_random_engine random_engine;
+    GLuint room_texture;
 
     bool valid(int r, int c);
     void dfs(int r, int c, int dir, double prob);
