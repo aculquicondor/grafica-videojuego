@@ -39,6 +39,9 @@ private:
     glm::vec3 cPosition, nPosition;
     glm::vec3 direction;
     Model *model;
+
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 };
 
 #endif //VIDEOGAME_GOLEM_H

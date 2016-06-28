@@ -5,6 +5,9 @@
 #include "Golem.h"
 
 
+GLfloat Golem::ambient[4] = {.45f, .5f, .3f, 1.f};
+GLfloat Golem::diffuse[4] = {.5f, .55f, .35f, 1.f};
+
 
 Golem::Golem(glm::vec3 pos):
         cPosition(pos),
@@ -23,6 +26,8 @@ void Golem::draw()
     glScalef(.25f, .25f, .25f);
     glColor3f(.35f, .35f, .2f);
     glRotatef(glm::atan(direction.x, direction.z) * 57.2957f, 0, 1, 0);
+    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
     model->draw();
     glPopMatrix();
 }

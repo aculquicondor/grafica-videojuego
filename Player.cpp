@@ -1,5 +1,10 @@
 #include "Player.h"
 
+
+GLfloat Player::ambient[4] = {.8f, .8f, 0, 1};
+GLfloat Player::diffuse[4] = {.9f, .9f, 0, 1};
+
+
 Player::Player() :
         x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0),
         live_points(6),
@@ -58,6 +63,8 @@ void Player::draw() {
     glRotated(angle, 0, 1, 0);
     glScalef(.05f, .05f, .05f);
     glColor3f(1, 1, 0);
+    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
     model->draw();
     glPopMatrix();
 }

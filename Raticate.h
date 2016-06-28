@@ -35,6 +35,9 @@ private:
     glm::vec3 pos_actual, next_pos;
 
     Model *model;
+
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 };
 
 

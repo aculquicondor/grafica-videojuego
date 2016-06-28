@@ -38,6 +38,9 @@ private:
     int leftRight;
 
     Model *model;
+
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 };
 
 

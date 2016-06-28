@@ -1,6 +1,11 @@
 #include "Game.h"
 
 
+const GLfloat Game::LightAmbient[4] = { 0.6f, 0.6f, 0.6f, 1.0f };
+const GLfloat Game::LightDiffuse[4] = { 1.f, 1.f, 1.f, 1.f};
+const GLfloat Game::LightDirection[4]= {1, 10, -1, 0};
+
+
 Game::Game(int &argc, char **argv) :
         width(1000), height(700), mapShow(false),
         graceTime(0) {
@@ -74,6 +79,13 @@ void Game::mainLoop() {
             std::cout << player->livePoints() << std::endl;
         }
     }
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
+    glLightfv(GL_LIGHT0, GL_POSITION, LightDirection);
 
     room->draw();
     room->update(delta_time, player_pos, Player::radius);

@@ -41,7 +41,9 @@ void Model::draw() const {
     glBegin(GL_TRIANGLES);
     for (std::size_t i = 0; i < vertexIndices.size(); ++i) {
         const glm::vec3 &vertex = vertices[vertexIndices[i]];
+        const glm::vec3 &normal = normals[normalIndices[i]];
         glVertex3f(vertex.x, vertex.y, vertex.z);
+        glNormal3f(normal.x, normal.y, normal.z);
     }
     glEnd();
 }

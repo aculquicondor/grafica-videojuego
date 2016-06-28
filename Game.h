@@ -11,7 +11,6 @@
 #include "Player.h"
 
 
-
 class Game {
 public:
     Game(int &argc, char **argv);
@@ -41,6 +40,10 @@ private:
     Map *map;
     Player *player;
     std::chrono::time_point<std::chrono::system_clock> prev_time, new_time;
+
+    static const GLfloat LightAmbient[4];
+    static const GLfloat LightDiffuse[4];
+    static const GLfloat LightDirection[4];
 };
 
 

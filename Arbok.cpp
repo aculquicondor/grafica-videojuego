@@ -4,6 +4,9 @@
 
 #include "Arbok.h"
 
+GLfloat Arbok::ambient[4] = {.45f, .1f, .5f, 1.f};
+GLfloat Arbok::diffuse[4] = {.47f, .12f, .52f, 1.f};
+
 
 Arbok::Arbok(glm::vec3 pos):
         cPosition(pos),
@@ -55,6 +58,8 @@ void Arbok::draw()
     glColor3f(.2f, 0, .5f);
     glRotatef(glm::atan(direction.x, direction.z) * 57.2957f, 0, 1, 0);
     glRotatef(40,1,0,0);
+    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
     model->draw();
     glPopMatrix();
 

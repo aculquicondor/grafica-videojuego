@@ -52,6 +52,9 @@ private:
     void settingBullet(glm::vec3,glm::vec3);
     void resetBullet();
     bool bulletColition();
+
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 };
 
 

@@ -51,6 +51,9 @@ private:
     void drawHexahedron(glm::vec3,glm::vec3);
 
     static const float doorWidth;
+
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 };
 
 

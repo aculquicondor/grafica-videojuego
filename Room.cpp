@@ -1,5 +1,7 @@
 #include "Room.h"
 
+GLfloat Room::ambient[4] = {.5, .5, .5,1};
+GLfloat Room::diffuse[4] = {0.6,0.6,0.6,1};
 
 Room::Room(GLuint texture) : _seen(false), random_engine(std::random_device()()), texture(texture) {
     for (int i = 0; i < 4; ++i)
@@ -71,6 +73,8 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
 }
 
 void Room::draw(){
+    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
 
     float unit = 1.0;
     float side= 15.0f*unit;
