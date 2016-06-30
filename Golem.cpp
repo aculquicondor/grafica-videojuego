@@ -14,22 +14,8 @@ Golem::Golem(glm::vec3 pos):
         speed(2),
         countDown(1.5),
         random_engine(std::random_device()()),
-        rolling(false),
-        model(Model::getModel("golem")) {
+        rolling(false){
     changeDirection();
-}
-
-void Golem::draw()
-{
-    glPushMatrix();
-    glTranslatef(cPosition.x, 0.0, cPosition.z);
-    glScalef(.25f, .25f, .25f);
-    glColor3f(.35f, .35f, .2f);
-    glRotatef(glm::atan(direction.x, direction.z) * 57.2957f, 0, 1, 0);
-    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
-    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
-    model->draw();
-    glPopMatrix();
 }
 
 glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)

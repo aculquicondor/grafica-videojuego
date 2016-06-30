@@ -25,6 +25,7 @@ set(SOURCE_FILES main.cpp
         Enemy.h
         Raticate.cpp Raticate.h
         Golem.cpp Golem.h
-        Arbok.cpp Arbok.h)
+        Arbok.cpp Arbok.h
+        Drawable.cpp Drawable.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})

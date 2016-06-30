@@ -1,6 +1,9 @@
 #ifndef VIDEOGAME_GAMESTATE_H
 #define VIDEOGAME_GAMESTATE_H
 
+#include <GL/glew.h>
+#include <GL/glut.h>
+
 #include "Model.h"
 #include "Room.h"
 
@@ -12,9 +15,10 @@ public:
 
     glm::vec3 moveTest(float time);
     glm::vec3 move(RoomWhere where);
-    void draw();
     void specialDown(int key);
     void specialUp(int key);
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 
     void reset();
     glm::vec3 position() const;
@@ -23,6 +27,10 @@ public:
 
     int livePoints() {
         return live_points;
+    }
+
+    int getAngle() {
+        return angle;
     }
 
     static const float radius;
@@ -37,10 +45,7 @@ private:
     int topDown;
     int leftRight;
 
-    Model *model;
 
-    static GLfloat ambient[4];
-    static GLfloat diffuse[4];
 };
 
 

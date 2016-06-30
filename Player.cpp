@@ -7,12 +7,11 @@ GLfloat Player::diffuse[4] = {.9f, .9f, 0, 1};
 
 Player::Player() :
         x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0),
-        live_points(6),
-        model(Model::getModel("pikachu")) {
+        live_points(6){
 }
 
 Player::~Player() {
-    delete model;
+
 }
 
 glm::vec3 Player::moveTest(float time) {
@@ -56,19 +55,6 @@ void Player::reset() {
 bool Player::attack() {
     return --live_points > 0;
 }
-
-void Player::draw() {
-    glPushMatrix();
-    glTranslated(x, 0, z);
-    glRotated(angle, 0, 1, 0);
-    glScalef(.05f, .05f, .05f);
-    glColor3f(1, 1, 0);
-    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
-    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
-    model->draw();
-    glPopMatrix();
-}
-
 
 void Player::specialDown(int key) {
     if (key == GLUT_KEY_UP) {

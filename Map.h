@@ -16,7 +16,6 @@ public:
     virtual ~Map();
     int getRows() const;
     int getColumns() const;
-    void draw(Room *currRoom);
 
     int startRow() const {
         return start_r;
@@ -35,6 +34,12 @@ public:
         return map[r][c];
     }
 
+    Room * getCurrentRoom(){
+        return currentRoom;
+    }
+
+    Room * serCurrent(int r, int c);
+
     static const int dr[], dc[];
 
 private:
@@ -44,10 +49,10 @@ private:
     int exit_r, exit_c;
     std::default_random_engine random_engine;
     GLuint room_texture;
+    Room * currentRoom;
 
     bool valid(int r, int c);
     void dfs(int r, int c, int dir, double prob);
-    void drawSquare(glm::vec2, glm::vec2);
 };
 
 

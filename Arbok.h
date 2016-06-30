@@ -5,12 +5,10 @@
 #define VIDEOGAME_ARBOK_H
 
 #include <random>
-
 #include <glm/glm.hpp>
 
 #include "Enemy.h"
 #include "Room.h"
-#include "Model.h"
 
 struct Bullet{
     glm::vec3 position, direction;
@@ -27,7 +25,8 @@ public:
     std::default_random_engine random_engine;
     static const float radio;
     glm::vec3 stepTest(float time, glm::vec3 playerPosition);
-    void draw();
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 
     void step();
 
@@ -38,10 +37,23 @@ public:
     glm::vec3 position() const {
         return cPosition;
     }
+    float getAngle(){
+        return glm::atan(direction.x, direction.z);
+    }
+
+    int type() {
+        return 3;}
+
+    float* getAmbient() {
+        return ambient;
+    }
+    float* getdiffuse() {
+        return diffuse;
+    }
+
     void reflectDirection();
 
 private:
-    Model *model;
     glm::vec3 cPosition, nextpos;;
     glm::vec3 direction;
     float speed;
@@ -52,9 +64,6 @@ private:
     void settingBullet(glm::vec3,glm::vec3);
     void resetBullet();
     bool bulletColition();
-
-    static GLfloat ambient[4];
-    static GLfloat diffuse[4];
 };
 
 

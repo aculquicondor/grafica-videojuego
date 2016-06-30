@@ -2,14 +2,11 @@
 #define VIDEOGAME_ROOM_H
 
 #include <cmath>
-#include <list>
+#include <vector>
 #include <random>
 
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <glm/vec3.hpp>
 
-#include "TextureManager.h"
 #include "RoomWhere.h"
 #include "Raticate.h"
 #include "Golem.h"
@@ -21,34 +18,32 @@ public:
     Room(GLuint texture);
     ~Room();
 
+    static const float width;
+
     void setDoor(int id, bool value = true);
     bool getDoor(int id);
-
     RoomWhere where(float x, float z, float radius, Enemy *enemy = nullptr) const;
-
-    void draw();
-
-    static const float width;
+    void update(float time, glm::vec3 player_pos, float player_radius);
 
     void discover() {
         _seen = true;
     }
 
-    void update(float time, glm::vec3 player_pos, float player_radius);
-
     bool seen() const {
         return _seen;
     }
 
+    std::vector<Enemy *> getEnemies(){
+        return enemies;
+    }
+
 private:
     GLuint texture;
-    std::list<Enemy *> enemies;
+    std::vector<Enemy *> enemies;
     std::default_random_engine random_engine;
 
     bool _seen;
     bool doors[];
-
-    void drawHexahedron(glm::vec3,glm::vec3);
 
     static const float doorWidth;
 

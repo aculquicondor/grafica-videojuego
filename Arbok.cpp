@@ -12,9 +12,7 @@ Arbok::Arbok(glm::vec3 pos):
         cPosition(pos),
         speed(3),
         acumulateT(0),
-        random_engine(std::random_device()()),
-        model(Model::getModel("arbok"))
-{
+        random_engine(std::random_device()()){
     changeDirection();
     resetBullet();
 }
@@ -50,27 +48,6 @@ glm::vec3 Arbok::stepTest(float time, glm::vec3 playerPosition) {
     return nextpos;
 }
 
-void Arbok::draw()
-{
-    glPushMatrix();
-    glTranslatef(cPosition.x, 0.0, cPosition.z);
-    glScalef(.25f, .25f, .25f);
-    glColor3f(.2f, 0, .5f);
-    glRotatef(glm::atan(direction.x, direction.z) * 57.2957f, 0, 1, 0);
-    glRotatef(40,1,0,0);
-    glMaterialfv(GL_FRONT,GL_AMBIENT, ambient);
-    glMaterialfv(GL_FRONT,GL_DIFFUSE, diffuse);
-    model->draw();
-    glPopMatrix();
-
-    if (bullet.alive){
-        glPushMatrix();
-        glTranslatef(bullet.position.x,0, bullet.position.z);
-        glColor3f(1, 1, 1);
-        glutSolidSphere(bullet.radio,10,10);
-        glPopMatrix();
-    }
-}
 void Arbok::changeDirection()
 {
     glm::vec3 dir;

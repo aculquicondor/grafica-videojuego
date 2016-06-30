@@ -5,12 +5,10 @@
 #define VIDEOGAME_GOLEM_H
 
 #include <random>
-
 #include <glm/glm.hpp>
 
 #include "Enemy.h"
 #include "Room.h"
-#include "Model.h"
 
 
 class Golem : public Enemy {
@@ -21,7 +19,8 @@ public:
     static const float radio;
     glm::vec3 stepTest(float time, glm::vec3 pos_player);
     void step();
-    void draw();
+    static GLfloat ambient[4];
+    static GLfloat diffuse[4];
 
     float radius() const {
         return radio;
@@ -30,7 +29,15 @@ public:
     glm::vec3 position() const {
         return cPosition;
     }
+
+    float getAngle(){
+        return glm::atan(direction.x, direction.z);
+    }
+
     void reflectDirection();
+
+    int type() {
+        return 2;}
 private:
     void changeDirection();
     float speed;
@@ -38,10 +45,8 @@ private:
     bool rolling;
     glm::vec3 cPosition, nPosition;
     glm::vec3 direction;
-    Model *model;
 
-    static GLfloat ambient[4];
-    static GLfloat diffuse[4];
+
 };
 
 #endif //VIDEOGAME_GOLEM_H

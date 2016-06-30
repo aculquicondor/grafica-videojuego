@@ -3,7 +3,7 @@
 
 const GLfloat Game::LightAmbient[4] = { 0.6f, 0.6f, 0.6f, 1.0f };
 const GLfloat Game::LightDiffuse[4] = { 1.f, 1.f, 1.f, 1.f};
-const GLfloat Game::LightDirection[4]= {1, 10, -1, 0};
+const GLfloat Game::LightDirection[4]= {-5, 10, 2, 0};
 
 
 Game::Game(int &argc, char **argv) :
@@ -19,19 +19,24 @@ Game::Game(int &argc, char **argv) :
 
     map = new Map(5, 7);
     player = new Player();
+    painter = new Drawable(player);
+    painter->setMap(map);
+    painter->scan();
     row = map->startRow();
     col = map->startCol();
-    map->room(row, col)->discover();
 }
 
 
 void Game::newGame() {
+    delete painter;
     delete map;
     map = new Map(5, 7);
     row = map->startRow();
     col = map->startCol();
-    map->room(row, col)->discover();
     player->reset();
+    painter = new Drawable(player);
+    painter->setMap(map);
+    painter->scan();
 }
 
 
@@ -42,6 +47,11 @@ void Game::initGL() {
     glDepthFunc(GL_LESS);
     glLoadIdentity();
 
+    glEnable(GL_COLOR_MATERIAL);
+    GLfloat ambientGround[4] = {0.3,0.3,0.3,1};
+    GLfloat diffuseGround[4] = {0.5,0.5,0.5,1};
+    glMaterialfv(GL_FRONT,GL_AMBIENT,ambientGround);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,diffuseGround);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
@@ -64,8 +74,8 @@ void Game::mainLoop() {
     if (where > CAN_BE) {
         row += Map::dr[where - N_DOOR];
         col += Map::dc[where - N_DOOR];
-        room = map->room(row, col);
-        room->discover();
+        room = map->serCurrent(row, col);
+        painter->scan();
     }
     player_pos = player->move(where);
 
@@ -82,20 +92,18 @@ void Game::mainLoop() {
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-
     glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
     glLightfv(GL_LIGHT0, GL_POSITION, LightDirection);
 
-    room->draw();
+    painter->draw();
     room->update(delta_time, player_pos, Player::radius);
-    player->draw();
 
     if (mapShow) {
         glLoadIdentity();
         glViewport(width - 400, 0, 400, 400);
         glOrtho(0, 17, 0, 17, -1, 1);
-        map->draw(room);
+        painter->drawMiniMap();
     }
 
     glutSwapBuffers();

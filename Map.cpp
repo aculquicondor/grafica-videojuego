@@ -3,7 +3,6 @@
 
 Map::Map(int rows, int cols) : rows(rows), cols(cols),
                                random_engine(std::random_device()()) {
-    room_texture = TextureManager::instance().loadTexture("textures/wall.tga", GL_BGR);
     map = new Room**[rows];
     map[0] = new Room*[rows * cols];
     for (int i = 1; i < rows; ++i)
@@ -16,10 +15,13 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
     start_r = std::uniform_int_distribution<int>(0, rows - 1)(random_engine);
     start_c = std::uniform_int_distribution<int>(0, cols - 1)(random_engine);
     dfs(start_r, start_c, 0, 1);
+    map[start_r][start_c]->discover();
+    currentRoom = map[start_r][start_c];
 }
 
 
 Map::~Map() {
+    currentRoom = nullptr;
     for (int i = 0; i < rows; ++i)
         for (int j = 0; j < cols; ++j)
             if (map[i][j])
@@ -66,55 +68,8 @@ const int Map::dr[] = {-1, 0, 1, 0};
 
 const int Map::dc[] = {0, 1, 0, -1};
 
-
-void Map::draw(Room *currRoom)
-{
-    float x,y;
-
-    float unit = 16.0f / std::max(rows, cols);
-    float initialX = .5f;
-    float initialY = unit * rows + .5f;
-
-    glColor3f(1,1,1);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(0, 0);
-    glVertex2f(unit * cols + 1, 0);
-    glVertex2f(unit * cols + 1, unit * rows + 1);
-    glVertex2f(0, unit * rows + 1);
-    glEnd();
-
-    Room* room;
-    for (int r=0 ; r<rows; ++r){
-        for (int c=0 ; c<cols ; ++c) {
-            if (map[r][c] and map[r][c]->seen()) {
-                x = initialX + c * unit + unit*0.5f;
-                y = initialY - r * unit - unit*0.5f;
-                if (map[r][c] == currRoom)
-                    glColor3f(.3f, .3f, .6f);
-                else
-                    glColor3f(1.0, .5f, 0.0f);
-                room = map[r][c];
-                //dibujar habitaciones
-                drawSquare(glm::vec2(x-unit*0.45,y-unit*0.45),glm::vec2(x+unit*0.45,y+unit*0.45));
-                //dibujar pasadizos
-                if (room->getDoor(0)) //north
-                    drawSquare(glm::vec2(x-0.1*unit , y+.45*unit),glm::vec2(x+0.1*unit , y+0.5*unit));
-                if (room->getDoor(1)) //east
-                    drawSquare(glm::vec2(x+.45*unit , y-0.1*unit),glm::vec2(x+.5*unit , y+0.1*unit));
-                if (room->getDoor(2)) //south
-                    drawSquare(glm::vec2(x-0.1*unit , y-0.5*unit),glm::vec2(x+.1*unit, y-.45*unit));
-                if (room->getDoor(3)) //west
-                    drawSquare(glm::vec2(x-0.5*unit , y-.1*unit),glm::vec2(x-.45*unit, y+.1*unit));
-            }
-        }
-    }
-}
-
-void Map::drawSquare(glm::vec2 min, glm::vec2 max){
-    glBegin(GL_QUADS);
-    glVertex2f(min[0],min[1]);
-    glVertex2f(max[0],min[1]);
-    glVertex2f(max[0],max[1]);
-    glVertex2f(min[0],max[1]);
-    glEnd();
+Room* Map::serCurrent(int r, int c) {
+    currentRoom = map[r][c];
+    currentRoom->discover();
+    return currentRoom;
 }

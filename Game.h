@@ -9,6 +9,7 @@
 
 #include "Map.h"
 #include "Player.h"
+#include "Drawable.h"
 
 
 class Game {
@@ -39,6 +40,7 @@ private:
 
     Map *map;
     Player *player;
+    Drawable *painter;
     std::chrono::time_point<std::chrono::system_clock> prev_time, new_time;
 
     static const GLfloat LightAmbient[4];
