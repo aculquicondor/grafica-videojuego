@@ -12,7 +12,7 @@
 class Raticate : public Enemy
 {
 public:
-    Raticate(glm::vec3 pos_actual, float speed = 3.f);
+    Raticate(glm::vec3 pos_actual, int);
     static const float radio;
     glm::vec3 stepTest(float time, glm::vec3 pos_player);
     void step();
@@ -32,11 +32,17 @@ public:
 
     int type() {
         return 1;}
-    void reflectDirection();
+    void reflectDirection(float,float);
+    int getPower();
+    int getLifePoints();
 private:
     float speed;
     float angle;
     glm::vec3 pos_actual, next_pos;
+    int power;
+    int lifePoints;
+    int defense;
+    int level;
 };
 
 

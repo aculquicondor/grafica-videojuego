@@ -13,7 +13,7 @@
 
 class Golem : public Enemy {
 public:
-    Golem(glm::vec3);
+    Golem(glm::vec3, int);
 
     std::default_random_engine random_engine;
     static const float radio;
@@ -34,10 +34,12 @@ public:
         return glm::atan(direction.x, direction.z);
     }
 
-    void reflectDirection();
+    void reflectDirection(float,float);
 
-    int type() {
-        return 2;}
+    int type() { return 2;}
+    int getPower();
+    int getLifePoints();
+
 private:
     void changeDirection();
     float speed;
@@ -45,7 +47,10 @@ private:
     bool rolling;
     glm::vec3 cPosition, nPosition;
     glm::vec3 direction;
-
+    int lifePoints;
+    int defense;
+    int power;
+    int level;
 
 };
 

@@ -13,11 +13,11 @@ Room::Room(GLuint texture) : _seen(false), random_engine(std::random_device()())
               z = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine);
         int type = std::uniform_int_distribution<int>(0, 2)(random_engine);
         if (type == 0)
-            enemies.push_back(new Raticate(glm::vec3(x, 0, z)));
+            enemies.push_back(new Raticate(glm::vec3(x, 0, z),1));
         else if (type == 1)
-            enemies.push_back(new Golem(glm::vec3(x, 0, z)));
+            enemies.push_back(new Golem(glm::vec3(x, 0, z),1));
         else
-            enemies.push_back(new Arbok(glm::vec3(x, 0, z)));
+            enemies.push_back(new Arbok(glm::vec3(x, 0, z),1));
     }
 }
 
@@ -39,19 +39,19 @@ RoomWhere Room::where(float x, float z, float radius, Enemy *enemy) const {
     if (x + radius > Room::width) {
         if (doors[1] and abs(z) < doorWidth)
             return E_DOOR;
-        return CANT_BE;
+        return E_COLLISION;
     } if (x - radius < -Room::width) {
         if (doors[3] and abs(z) < doorWidth)
             return W_DOOR;
-        return CANT_BE;
+        return W_COLLISION;
     } if (z + radius > Room::width) {
         if (doors[2] and abs(x) < doorWidth)
             return S_DOOR;
-        return CANT_BE;
+        return S_COLLISION;
     } if (z - radius < -Room::width) {
         if (doors[0] and abs(x) < doorWidth)
             return N_DOOR;
-        return CANT_BE;
+        return N_COLLISION;
     }
     for (Enemy *other_enemy : enemies)
         if (other_enemy != enemy) {
@@ -63,12 +63,29 @@ RoomWhere Room::where(float x, float z, float radius, Enemy *enemy) const {
 }
 
 void Room::update(float time, glm::vec3 player_pos, float player_radius) {
+    for (Enemy *enemy : enemies){
+        if (enemy->type() == 3 and ((Arbok*)enemy)->isShooting()){ // Arbok, puede tener una bala
+            glm::vec3 dirBullet = glm::normalize(player_pos - enemy->position());
+            glm::vec3 posBullet = enemy->position() + dirBullet * enemy->radius() * 2.0f;
+            enemies.push_back(new Bullet(posBullet,dirBullet,0,enemy->getPower()*2));
+        } // otro enemigo dispara 8 balas
+    }
     for (Enemy *enemy : enemies) {
         glm::vec3 pos = enemy->stepTest(time, player_pos);
-        if (where(pos.x, pos.z, enemy->radius(), enemy) == CAN_BE)
+        RoomWhere npos = where(pos.x, pos.z, enemy->radius(), enemy);
+        if (npos == CAN_BE)
             enemy->step();
-        else
-            enemy->reflectDirection();
+        else if (npos == E_COLLISION or npos == W_COLLISION)
+            enemy->reflectDirection(-1,1);
+        else if (npos == N_COLLISION or npos == S_COLLISION)
+            enemy->reflectDirection(1,-1);
+    }
+
+    for (int i=0 ; i<enemies.size() ; ++i){
+        if (enemies[i]->getLifePoints()<=0){
+            enemies.erase(enemies.begin()+i);
+            --i;
+        }
     }
 }
 

@@ -20,8 +20,7 @@
 class Drawable {
 private:
     Map * myMap;
-    vector<Room *> myRooms;
-    vector<Enemy *> myEnemys;
+    Room * myRoom;
     vector<Model *> myModels;
     Player * myPlayer;
     //vector<Item *> myItems;
@@ -35,8 +34,9 @@ public:
     Drawable(Player *);
     ~Drawable();
 
-    void scan();
+
     void setMap(Map *);
+    void setRoom(Room *);
     void draw();
     void drawMiniMap();
     void drawPlayeStatus();

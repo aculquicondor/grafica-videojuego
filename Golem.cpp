@@ -9,12 +9,17 @@ GLfloat Golem::ambient[4] = {.45f, .5f, .3f, 1.f};
 GLfloat Golem::diffuse[4] = {.5f, .55f, .35f, 1.f};
 
 
-Golem::Golem(glm::vec3 pos):
+Golem::Golem(glm::vec3 pos, int lv):
         cPosition(pos),
-        speed(2),
         countDown(1.5),
+        level(lv),
         random_engine(std::random_device()()),
         rolling(false){
+    // base + nivel*constante
+    speed = 2.0f + lv * 0.25f;
+    power = 10 + lv * 5;
+    defense = 20 + lv * 10;
+    lifePoints = 200 + lv * 40;
     changeDirection();
 }
 
@@ -25,7 +30,9 @@ glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)
         if (countDown <= 0){
             changeDirection();
             countDown = 1.5;
-            speed = 2;
+            speed = 2.0f + level * 0.25f;
+            power = 10 + level * 5;
+            defense = 20 + level * 10;
             rolling = false;
         }
     }else{ // caminando
@@ -42,7 +49,9 @@ glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)
             if(dist1<.9 or dist2<.9) //90º de visionen promedio
             {
                 rolling = true;
-                speed =  12;
+                speed = 10.0f + level * 0.5f;
+                power = 20 + level * 10;
+                defense = 10 + level * 5;
                 countDown = 3;
                 direction =glm::normalize(playerPosition-cPosition);
             }
@@ -64,15 +73,18 @@ void Golem::changeDirection() {
     direction = glm::normalize(dir);
 }
 
-void Golem::reflectDirection() {
-    if (nPosition.x + radio > Room::width)
-        direction.x *= -1;
-    if (nPosition.x - radio < -Room::width)
-        direction.x *= -1;
-    if (nPosition.z + radio > Room::width)
-        direction.z *= -1;
-    if (nPosition.z - radio < -Room::width)
-        direction.z *= -1;
+void Golem::reflectDirection(float x, float z) {
+    direction.x *= x;
+    direction.z *= z;
+    countDown = 1.5;
+}
+
+int Golem::getPower() {
+    return power;
+}
+
+int Golem::getLifePoints() {
+    return lifePoints;
 }
 
 const float Golem::radio = 1.f;

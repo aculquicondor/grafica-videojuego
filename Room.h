@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <random>
+#include <iostream>
 
 #include <glm/vec3.hpp>
 
@@ -33,8 +34,12 @@ public:
         return _seen;
     }
 
-    std::vector<Enemy *> getEnemies(){
-        return enemies;
+    Enemy * getEnemy(int i){
+        return enemies[i];
+    }
+
+    int enemiesSize(){
+        return enemies.size();
     }
 
 private:

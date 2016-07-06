@@ -6,7 +6,7 @@
 
 Drawable::Drawable(Player * p): myPlayer(p) {
     // por ahora solo se dibuja una room a la vez
-    myRooms.push_back(nullptr);
+    myRoom = nullptr;
     myModels.push_back(Model::getModel("pikachu"));
     myModels.push_back(Model::getModel("raticate"));
     myModels.push_back(Model::getModel("golem"));
@@ -16,8 +16,7 @@ Drawable::Drawable(Player * p): myPlayer(p) {
 Drawable::~Drawable() {
     myMap = nullptr;
     myPlayer = nullptr;
-    myEnemys.clear();
-    myRooms.clear();
+    myRoom = nullptr;
     //for (Model *m : myModels)
         //delete m;
     myModels.clear();
@@ -27,10 +26,8 @@ void Drawable::setMap(Map * m) {
     myMap = m;
 }
 
-//cuando se cambia de habitacion
-void Drawable::scan() {
-    myRooms[0] = myMap->getCurrentRoom();
-    myEnemys = myRooms[0]->getEnemies();
+void Drawable::setRoom(Room * r) {
+    myRoom = r;
 }
 
 void Drawable::draw() {
@@ -40,9 +37,11 @@ void Drawable::draw() {
     glMaterialfv(GL_FRONT,GL_AMBIENT,ambientGround);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,diffuseGround);
 
-    drawRoom(myRooms[0]);
-    for (Enemy *enemy : myEnemys)
-        drawEnemies(enemy);
+    drawRoom(myRoom);
+    int enemysize = myRoom->enemiesSize();
+    for (int i=0 ; i<enemysize ; ++i)
+        drawEnemies(myRoom->getEnemy(i));
+
     drawPlayer();
 }
 
@@ -204,23 +203,32 @@ void Drawable::drawEnemies(Enemy * e) {
         glMaterialfv(GL_FRONT,GL_AMBIENT, Raticate::ambient);
         glMaterialfv(GL_FRONT,GL_DIFFUSE, Raticate::diffuse);
         glScalef(.35f, .35f, .35f);
-
+        glRotatef(angle * 57.2957f, 0, 1, 0);
+        glRotated(90, 1, 0, 0);
+        myModels[1]->draw();
     }else if (e->type() == 2){
         glColor3f(.5f, .55f, .35f);
         glMaterialfv(GL_FRONT,GL_AMBIENT, Golem::ambient);
         glMaterialfv(GL_FRONT,GL_DIFFUSE, Golem::diffuse);
         glScalef(.25f, .25f, .25f);
-    }else{
+        glRotatef(angle * 57.2957f, 0, 1, 0);
+        myModels[2]->draw();
+    }else if (e->type() == 3){
         glColor3f(0.45f, 0.1f, 0.5f);
         glMaterialfv(GL_FRONT,GL_AMBIENT, Arbok::ambient);
         glMaterialfv(GL_FRONT,GL_DIFFUSE, Arbok::diffuse);
         glScalef(0.25f, 0.25f, 0.25f);
-    }
-    glRotatef(angle * 57.2957f, 0, 1, 0);
-    if (e->type() != 2)
+        glRotatef(angle * 57.2957f, 0, 1, 0);
         glRotated(90, 1, 0, 0);
+        myModels[3]->draw();
+    }else if (e->type() == 4){
+        glColor3f(0.45f, 0.1f, 0.5f);
+        glutSolidSphere(e->radius(),10,10);
+        //std::cout<< pos.x<<" "<<pos.z<<std::endl;
+    }
 
-    myModels[e->type()]->draw();
+
+
     glPopMatrix();
 }
 

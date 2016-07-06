@@ -8,13 +8,26 @@ GLfloat Arbok::ambient[4] = {.45f, .1f, .5f, 1.f};
 GLfloat Arbok::diffuse[4] = {.47f, .12f, .52f, 1.f};
 
 
-Arbok::Arbok(glm::vec3 pos):
+Arbok::Arbok(glm::vec3 pos, int lv):
         cPosition(pos),
+        level(lv),
         speed(3),
         acumulateT(0),
+        //bullet(nullptr),
+        shootingTime(0),
+        myShot(false),
         random_engine(std::random_device()()){
+
+    // base + nivel*constante
+    speed = 2.0f + lv * 0.2f;
+    power = 20 + lv * 10;
+    defense = 15 + lv * 8;
+    lifePoints = 150 + lv * 30;
     changeDirection();
-    resetBullet();
+}
+
+Arbok::~Arbok() {
+
 }
 
 glm::vec3 Arbok::stepTest(float time, glm::vec3 playerPosition) {
@@ -27,24 +40,24 @@ glm::vec3 Arbok::stepTest(float time, glm::vec3 playerPosition) {
         changeDirection();
         acumulateT = 1.5;
     }
+    if (shootingTime == 0) {
+        if (glm::length(glm::distance(playerPosition, cPosition)) < 15.0) {
 
-    if (!bullet.alive) //no disparo
-    {
-        //vision arbok
-        if (glm::length(glm::distance(playerPosition, cPosition)) < 10.0) {
-            float angle1 = (float) atan2(direction.z, direction.x); //vision
-            float angle2 = (float) atan2(playerPosition.z - direction.z, playerPosition.x - direction.x);
-            float dist1 = glm::abs(angle1 - angle2);
-            float dist2 = 2 * 3.14159f - dist1;
+            float angle1 = glm::atan(direction.z,direction.x); //vision
+            float angle2 = glm::atan(playerPosition.z-direction.z,playerPosition.x-direction.x);
+            float dist1 = glm::abs(angle1-angle2);
+            float dist2 = 2*3.14159f - dist1;
             if (dist1 < .9 or dist2 < .9) //90º de visionen promedio
-                settingBullet(cPosition, glm::normalize(playerPosition-cPosition));
+            {
+                shootingTime = 2.0;
+                myShot = true;
+            }else
+                shootingTime = 0;
         }
-    }else//disparo
-    {
-        bullet.position += bullet.direction*(bullet.speed*time);
-        if (bulletColition())
-            resetBullet();
-    }
+    } else
+        shootingTime -= time;
+    if (shootingTime < 0)
+        shootingTime = 0;
     return nextpos;
 }
 
@@ -63,34 +76,25 @@ void Arbok::step()
     cPosition = nextpos;
 }
 
-void Arbok::reflectDirection(){
-
+void Arbok::reflectDirection(float x, float z){
+    direction.x *= x;
+    direction.z *= z;
+    acumulateT = 1.5;
 }
 
-void Arbok::settingBullet(glm::vec3 pos, glm::vec3 dir) {
-    bullet.alive = true;
-    bullet.position = pos;
-    bullet.direction = dir;
-}
-
-void Arbok::resetBullet() {
-    bullet.position = glm::vec3(0,0,0);
-    bullet.direction = glm::vec3(0,0,0);;
-    bullet.alive = false;
-    bullet.speed = 17.0;
-    bullet.radio = 0.25;
-}
-
-bool Arbok::bulletColition(){
-    if (bullet.position.x + bullet.radio > Room::width)
+bool Arbok::isShooting() {
+    if (myShot){
+        myShot = false;
         return true;
-    if (bullet.position.x - bullet.radio < -Room::width)
-        return true;
-    if (bullet.position.z + bullet.radio > Room::width)
-        return true;
-    if (bullet.position.z - bullet.radio < -Room::width)
-        return true;
+    }
     return false;
 }
 
+int Arbok::getPower() {
+    return power;
+}
+
+int Arbok::getLifePoints() {
+    return lifePoints;
+}
 const float Arbok::radio = 1.f;

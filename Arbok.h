@@ -8,19 +8,14 @@
 #include <glm/glm.hpp>
 
 #include "Enemy.h"
+#include "Bullet.h"
 #include "Room.h"
-
-struct Bullet{
-    glm::vec3 position, direction;
-    bool alive;
-    float speed;
-    float radio;
-};
 
 class Arbok : public Enemy
 {
 public:
-    Arbok(glm::vec3);
+    Arbok(glm::vec3, int);
+    ~Arbok();
 
     std::default_random_engine random_engine;
     static const float radio;
@@ -51,19 +46,24 @@ public:
         return diffuse;
     }
 
-    void reflectDirection();
+    void reflectDirection(float, float);
+    bool isShooting();
+    int getPower();
+    int getLifePoints();
 
 private:
     glm::vec3 cPosition, nextpos;;
     glm::vec3 direction;
+    bool myShot;
     float speed;
     float acumulateT;
-    bool shooting;
+    float shootingTime;
     void changeDirection();
-    Bullet bullet;
-    void settingBullet(glm::vec3,glm::vec3);
-    void resetBullet();
-    bool bulletColition();
+
+    int lifePoints;
+    int defense;
+    int power;
+    int level;
 };
 
 

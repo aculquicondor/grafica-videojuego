@@ -21,7 +21,6 @@ Game::Game(int &argc, char **argv) :
     player = new Player();
     painter = new Drawable(player);
     painter->setMap(map);
-    painter->scan();
     row = map->startRow();
     col = map->startCol();
 }
@@ -36,7 +35,6 @@ void Game::newGame() {
     player->reset();
     painter = new Drawable(player);
     painter->setMap(map);
-    painter->scan();
 }
 
 
@@ -67,6 +65,7 @@ void Game::mainLoop() {
     gluLookAt(0, 25, 25, 0, 0, 0, 0, 1, 0);
 
     Room *room = map->room(row, col);
+    painter->setRoom(room);
 
     glm::vec3 player_pos = player->moveTest(delta_time);
     RoomWhere where = room->where(player_pos.x, player_pos.z, Player::radius);
@@ -75,16 +74,16 @@ void Game::mainLoop() {
         row += Map::dr[where - N_DOOR];
         col += Map::dc[where - N_DOOR];
         room = map->serCurrent(row, col);
-        painter->scan();
+        painter->setRoom(room);
     }
     player_pos = player->move(where);
-
     graceTime -= delta_time;
     if (where == COLLISION and graceTime <= 0) {
         graceTime = 1;
         if (not player->attack()) {
             newGame();
             room = map->room(row, col);
+            painter->setRoom(room);
         } else {
             std::cout << player->livePoints() << std::endl;
         }
@@ -98,6 +97,7 @@ void Game::mainLoop() {
 
     painter->draw();
     room->update(delta_time, player_pos, Player::radius);
+
 
     if (mapShow) {
         glLoadIdentity();
