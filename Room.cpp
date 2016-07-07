@@ -35,7 +35,7 @@ bool Room::getDoor(int id) {
     return doors[id];
 }
 
-RoomWhere Room::where(float x, float z, float radius, Enemy *enemy) const {
+RoomWhere Room::where(float x, float z, float radius) const {
     if (x + radius > Room::width) {
         if (doors[1] and abs(z) < doorWidth)
             return E_DOOR;
@@ -53,16 +53,44 @@ RoomWhere Room::where(float x, float z, float radius, Enemy *enemy) const {
             return N_DOOR;
         return N_COLLISION;
     }
-    for (Enemy *other_enemy : enemies)
-        if (other_enemy != enemy) {
-            glm::vec3 p = other_enemy->position();
-            if (glm::length(glm::distance(p, glm::vec3(x, 0, z))) < other_enemy->radius() + radius)
-                return COLLISION;
-        }
+
     return CAN_BE;
 }
 
+int Room::playerCollision(glm::vec3 playerPos, float r) {
+    for (Enemy *enemy : enemies) {
+        glm::vec3 p = enemy->position();
+        if (glm::length(glm::distance(p, playerPos)) < enemy->radius() + r) {
+            if (enemy->type() == 4)
+                enemy->receiveImpact(1);
+            return enemy->getPower();
+        }
+    }
+    return 0;
+}
+
+int Room::bulletCollision(Enemy *e) {
+    if (e->getLifePoints() <= 0 )
+        return 0;
+    for (Enemy *other_enemy : enemies){
+        if (other_enemy != e and other_enemy->type() == 4 and other_enemy->getLifePoints() > 0) {
+            glm::vec3 p = other_enemy->position();
+            if (glm::length(glm::distance(other_enemy->position(), e->position())) < other_enemy->radius() + e->radius()){
+                other_enemy->receiveImpact(1);
+                return other_enemy->getPower();
+            }
+        }
+    }
+    return 0;
+}
+
+int Room::enemiesCollision(Enemy *e) {
+    /*evitar q los enemigos se transpasen*/
+    return 0;
+}
+
 void Room::update(float time, glm::vec3 player_pos, float player_radius) {
+    /*CREACION DE BALAS*/
     for (Enemy *enemy : enemies){
         if (enemy->type() == 3 and ((Arbok*)enemy)->isShooting()){ // Arbok, puede tener una bala
             glm::vec3 dirBullet = glm::normalize(player_pos - enemy->position());
@@ -70,19 +98,35 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
             enemies.push_back(new Bullet(posBullet,dirBullet,0,enemy->getPower()*2));
         } // otro enemigo dispara 8 balas
     }
+
+    /*REBOTE EN LAS PAREDES */
     for (Enemy *enemy : enemies) {
         glm::vec3 pos = enemy->stepTest(time, player_pos);
-        RoomWhere npos = where(pos.x, pos.z, enemy->radius(), enemy);
-        if (npos == CAN_BE)
+        RoomWhere npos = where(pos.x, pos.z, enemy->radius());
+        if (npos == CAN_BE){
             enemy->step();
+        }
         else if (npos == E_COLLISION or npos == W_COLLISION)
             enemy->reflectDirection(-1,1);
         else if (npos == N_COLLISION or npos == S_COLLISION)
             enemy->reflectDirection(1,-1);
+        else if (npos > CAN_BE and enemy->type() == 4)
+            enemy->receiveImpact(1);
     }
 
+    /*calcular colisiones de las balas*/
+    for (Enemy *enemy : enemies) {
+        int damage = bulletCollision(enemy);
+        if (damage>0)
+            enemy->receiveImpact(damage);
+    }
+
+    removeDead();
+}
+
+void Room::removeDead() {
     for (int i=0 ; i<enemies.size() ; ++i){
-        if (enemies[i]->getLifePoints()<=0){
+        if (enemies[i]->getLifePoints() <= 0){
             enemies.erase(enemies.begin()+i);
             --i;
         }

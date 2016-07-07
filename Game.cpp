@@ -77,16 +77,18 @@ void Game::mainLoop() {
         painter->setRoom(room);
     }
     player_pos = player->move(where);
-    graceTime -= delta_time;
-    if (where == COLLISION and graceTime <= 0) {
-        graceTime = 1;
-        if (not player->attack()) {
-            newGame();
-            room = map->room(row, col);
-            painter->setRoom(room);
-        } else {
-            std::cout << player->livePoints() << std::endl;
-        }
+
+    int impact = room->playerCollision(player->position(),player->radius);
+    if (impact > 0){
+        player->reciveImpact(impact);
+        room->removeDead();
+    }
+    room->update(delta_time, player_pos, Player::radius);
+
+    if (player->getlifePoints() <= 0){
+        newGame();
+        room = map->room(row, col);
+        painter->setRoom(room);
     }
 
     glEnable(GL_LIGHTING);
@@ -96,7 +98,6 @@ void Game::mainLoop() {
     glLightfv(GL_LIGHT0, GL_POSITION, LightDirection);
 
     painter->draw();
-    room->update(delta_time, player_pos, Player::radius);
 
 
     if (mapShow) {

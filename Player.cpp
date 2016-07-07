@@ -6,8 +6,14 @@ GLfloat Player::diffuse[4] = {.9f, .9f, 0, 1};
 
 
 Player::Player() :
-        x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0),
-        live_points(6){
+        x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0){
+    lifePoints = 100;
+    defense = 10;
+    power = 40;
+    goldenKey = 0;
+    silverKey = 0;
+    speed = 7.5f;
+    graceTime = 0;
 }
 
 Player::~Player() {
@@ -17,6 +23,9 @@ Player::~Player() {
 glm::vec3 Player::moveTest(float time) {
     nx = x + mv_x * speed * time;
     nz = z + mv_z * speed * time;
+    graceTime -= time;
+    if (graceTime < 0)
+        graceTime = 0;
     return glm::vec3(nx, 0, nz);
 }
 
@@ -49,11 +58,12 @@ void Player::reset() {
     x = 0;
     z = 0;
     angle = 0;
-    live_points = 6;
-}
-
-bool Player::attack() {
-    return --live_points > 0;
+    lifePoints = 100;
+    defense = 10;
+    power = 40;
+    goldenKey = 0;
+    silverKey = 0;
+    speed = 7.5f;
 }
 
 void Player::specialDown(int key) {
@@ -84,5 +94,16 @@ glm::vec3 Player::position() const {
     return glm::vec3(x, 0, z);
 }
 
-const float Player::speed = 8.f;
+void Player::reciveImpact(int d) {
+    if (d == 0) return;
+    if (graceTime <= 0){
+        int damage = d-defense;
+        if(damage<1)
+            damage = 1;
+        lifePoints -= damage;
+        graceTime = 1.5;
+        std::cout << lifePoints << std::endl;
+    }
+}
+
 const float Player::radius = 1.f;

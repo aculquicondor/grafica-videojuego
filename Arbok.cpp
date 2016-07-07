@@ -20,7 +20,7 @@ Arbok::Arbok(glm::vec3 pos, int lv):
 
     // base + nivel*constante
     speed = 2.0f + lv * 0.2f;
-    power = 20 + lv * 10;
+    power = 10 + lv * 5;
     defense = 15 + lv * 8;
     lifePoints = 150 + lv * 30;
     changeDirection();

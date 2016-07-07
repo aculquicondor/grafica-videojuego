@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Room.h"
 
+using namespace std;
 
 class Player {
 public:
@@ -23,28 +24,26 @@ public:
     void reset();
     glm::vec3 position() const;
 
-    bool attack();
-
-    int livePoints() {
-        return live_points;
+    int getlifePoints() {
+        return lifePoints;
     }
 
     int getAngle() {
         return angle;
     }
 
+    void reciveImpact(int);
+
     static const float radius;
 private:
-    static const float speed;
-
-    int live_points;
     float x, z;
     float nx, nz;
     int mv_x, mv_z, angle;
-
+    int power, defense, goldenKey, silverKey, lifePoints;
+    float speed;
     int topDown;
     int leftRight;
-
+    float graceTime;
 
 };
 

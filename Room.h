@@ -23,7 +23,10 @@ public:
 
     void setDoor(int id, bool value = true);
     bool getDoor(int id);
-    RoomWhere where(float x, float z, float radius, Enemy *enemy = nullptr) const;
+    RoomWhere where(float x, float z, float radius) const;
+    int playerCollision(glm::vec3, float);
+    int enemiesCollision(Enemy*);
+    int bulletCollision(Enemy*);
     void update(float time, glm::vec3 player_pos, float player_radius);
 
     void discover() {
@@ -41,6 +44,8 @@ public:
     int enemiesSize(){
         return enemies.size();
     }
+
+    void removeDead();
 
 private:
     GLuint texture;
