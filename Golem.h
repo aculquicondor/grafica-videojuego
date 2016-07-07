@@ -1,11 +1,13 @@
 //
 // Created by Ed on 08/05/2016.
 //
+#define GLM_FORCE_RADIANS
 #ifndef VIDEOGAME_GOLEM_H
 #define VIDEOGAME_GOLEM_H
 
 #include <random>
 #include <glm/glm.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 #include "Enemy.h"
 #include "Room.h"
@@ -39,6 +41,7 @@ public:
     int type() { return 2;}
     int getPower();
     int getLifePoints();
+    void receiveImpact(int);
 
 private:
     void changeDirection();

@@ -41,6 +41,7 @@ public:
     }
     int getPower();
     int getLifePoints();
+    void receiveImpact(int);
 };
 
 

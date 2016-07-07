@@ -45,4 +45,11 @@ int Raticate::getLifePoints() {
     return lifePoints;
 }
 
+void Raticate::receiveImpact(int d) {
+    int damage = d-defense;
+    if (damage<1)
+        damage = 1;
+    lifePoints -= damage;
+}
+
 const float Raticate::radio = 1.f;

@@ -15,7 +15,7 @@ public:
     virtual int type() = 0;
     virtual int getLifePoints() = 0;
     virtual int getPower() = 0;
-    //virtual void receiveImpact(int) = 0;
+    virtual void receiveImpact(int) = 0;
 };
 
 

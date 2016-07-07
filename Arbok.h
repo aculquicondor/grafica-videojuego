@@ -1,11 +1,13 @@
 //
 // Created by Ed on 09/05/2016.
 //
+#define GLM_FORCE_RADIANS
 #ifndef VIDEOGAME_ARBOK_H
 #define VIDEOGAME_ARBOK_H
 
 #include <random>
 #include <glm/glm.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 #include "Enemy.h"
 #include "Bullet.h"
@@ -50,6 +52,7 @@ public:
     bool isShooting();
     int getPower();
     int getLifePoints();
+    void receiveImpact(int);
 
 private:
     glm::vec3 cPosition, nextpos;;

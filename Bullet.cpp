@@ -49,4 +49,9 @@ int Bullet::getPower() {
 int Bullet::getLifePoints() {
     return lifePoints;
 }
+
+void Bullet::receiveImpact(int damage) {
+    lifePoints -= damage;
+}
+
 const float Bullet::radio = 0.5f;

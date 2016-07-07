@@ -35,6 +35,8 @@ public:
     void reflectDirection(float,float);
     int getPower();
     int getLifePoints();
+    void receiveImpact(int);
+
 private:
     float speed;
     float angle;
