@@ -25,7 +25,7 @@ public:
     bool getDoor(int id);
     RoomWhere where(float x, float z, float radius) const;
     int playerCollision(glm::vec3, float);
-    int enemiesCollision(Enemy*);
+    bool enemiesCollision(Enemy*, glm::vec3);
     int bulletCollision(Enemy*);
     void update(float time, glm::vec3 player_pos, float player_radius);
 

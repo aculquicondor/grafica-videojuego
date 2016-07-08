@@ -84,9 +84,18 @@ int Room::bulletCollision(Enemy *e) {
     return 0;
 }
 
-int Room::enemiesCollision(Enemy *e) {
+bool Room::enemiesCollision(Enemy *e, glm::vec3 nextPos) {
     /*evitar q los enemigos se transpasen*/
-    return 0;
+    if (e->type() == 4)
+        return false;
+    for (Enemy *other_enemy : enemies){
+        if (other_enemy != e and other_enemy->type() != 4) {
+            glm::vec3 p = other_enemy->position();
+            if (glm::length(glm::distance(other_enemy->position(), nextPos)) < other_enemy->radius() + e->radius())
+                return true;
+        }
+    }
+    return false;
 }
 
 void Room::update(float time, glm::vec3 player_pos, float player_radius) {
@@ -101,9 +110,9 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
 
     /*REBOTE EN LAS PAREDES */
     for (Enemy *enemy : enemies) {
-        glm::vec3 pos = enemy->stepTest(time, player_pos);
-        RoomWhere npos = where(pos.x, pos.z, enemy->radius());
-        if (npos == CAN_BE){
+        glm::vec3 nextpos = enemy->stepTest(time, player_pos);
+        RoomWhere npos = where(nextpos.x, nextpos.z, enemy->radius());
+        if (npos == CAN_BE and !enemiesCollision(enemy,nextpos)){
             enemy->step();
         }
         else if (npos == E_COLLISION or npos == W_COLLISION)
