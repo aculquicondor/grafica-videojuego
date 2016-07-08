@@ -33,6 +33,8 @@ public:
     }
 
     void reciveImpact(int);
+    glm::vec3 direction();
+    int getPower();
 
     static const float radius;
 private:
@@ -44,7 +46,7 @@ private:
     int topDown;
     int leftRight;
     float graceTime;
-
+    glm::vec3 dir;
 };
 
 

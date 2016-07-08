@@ -1,3 +1,4 @@
+#define GLM_FORCE_RADIANS
 #ifndef VIDEOGAME_ROOM_H
 #define VIDEOGAME_ROOM_H
 
@@ -7,6 +8,7 @@
 #include <iostream>
 
 #include <glm/vec3.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 #include "RoomWhere.h"
 #include "Raticate.h"
@@ -44,6 +46,8 @@ public:
     int enemiesSize(){
         return enemies.size();
     }
+
+    void createBullet(glm::vec3, glm::vec3, int, int, float);
 
     void removeDead();
 

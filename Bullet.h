@@ -20,7 +20,7 @@ private:
     int power;
     int lifePoints;
 public:
-    Bullet(glm::vec3, glm::vec3, int, int);
+    Bullet(glm::vec3, glm::vec3, int, int, float);
     ~Bullet();
     glm::vec3 stepTest(float time, glm::vec3 playerPosition);
     void step();

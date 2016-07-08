@@ -37,6 +37,8 @@ private:
 
     int row, col;
     float graceTime;
+    int shot;
+    float shotTime;
 
     Map *map;
     Player *player;

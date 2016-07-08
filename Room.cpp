@@ -104,7 +104,7 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
         if (enemy->type() == 3 and ((Arbok*)enemy)->isShooting()){ // Arbok, puede tener una bala
             glm::vec3 dirBullet = glm::normalize(player_pos - enemy->position());
             glm::vec3 posBullet = enemy->position() + dirBullet * enemy->radius() * 2.0f;
-            enemies.push_back(new Bullet(posBullet,dirBullet,0,enemy->getPower()*2));
+            enemies.push_back(new Bullet(posBullet,dirBullet,0,enemy->getPower()*2,enemy->radius()));
         } // otro enemigo dispara 8 balas
     }
 
@@ -140,6 +140,16 @@ void Room::removeDead() {
             --i;
         }
     }
+}
+
+void Room::createBullet(glm::vec3 pos, glm::vec3 dir, int type, int power, float r) {
+    if (type == 3){
+        glm::vec3 vec1 = glm::rotateY(dir,0.3f);
+        glm::vec3 vec2 = glm::rotateY(dir,-0.3f);
+        enemies.push_back(new Bullet(pos,vec1,type,(int)(power*0.7), r));
+        enemies.push_back(new Bullet(pos,vec2,type,(int)(power*0.7), r));
+    }else
+        enemies.push_back(new Bullet(pos,dir,type,power, r));
 }
 
 const float Room::width = 15;

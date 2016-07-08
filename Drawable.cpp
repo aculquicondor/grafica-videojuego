@@ -223,6 +223,7 @@ void Drawable::drawEnemies(Enemy * e) {
         myModels[3]->draw();
     }else if (e->type() == 4){
         glColor3f(0.45f, 0.1f, 0.5f);
+        glTranslatef(0,1,0);
         glutSolidSphere(e->radius(),10,10);
         //std::cout<< pos.x<<" "<<pos.z<<std::endl;
     }

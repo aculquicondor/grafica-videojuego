@@ -3,20 +3,23 @@
 //
 
 #include "Bullet.h"
-Bullet::Bullet(glm::vec3 initial, glm::vec3 dir, int type, int p):
-                                                    cPosition(initial),
-                                                    power(p),
-                                                    direction(dir){
+Bullet::Bullet(glm::vec3 initial, glm::vec3 dir, int type, int p, float r): direction(dir){
+
+    cPosition = initial + dir * (r+radio+0.25f);
     if (type == 0){//normal sin rebote
-        speed = 8;
+        speed = 7;
         bounce = false;
     } else if (type == 1){//normal con rebote
-        speed = 8;
+        speed = 10;
         bounce = true;
-    } else{ // rapido sin rebote
-        speed = 12.0;
+    } else if (type == 2){ // rapido sin rebote
+        speed = 15.0;
+        bounce = false;
+    } else if (type == 3){ // tiro doble
+        speed = 10.0;
         bounce = false;
     }
+    power = p;
     lifePoints = 1;
 }
 

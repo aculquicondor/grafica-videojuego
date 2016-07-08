@@ -9,11 +9,12 @@ Player::Player() :
         x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0){
     lifePoints = 100;
     defense = 10;
-    power = 40;
+    power = 50;
     goldenKey = 0;
     silverKey = 0;
     speed = 7.5f;
     graceTime = 0;
+    dir = glm::vec3(0,0,1);
 }
 
 Player::~Player() {
@@ -46,10 +47,13 @@ glm::vec3 Player::move(RoomWhere where) {
     if (mv_x != 0) {
         angle = mv_x * 90;
         angle -= mv_x * mv_z * 45;
+        dir.x = mv_x;
+        dir.z = mv_z;
     } else if (mv_z != 0) {
         angle = 90 - mv_z * 90;
+        dir.x = 0;
+        dir.z = mv_z;
     }
-
     return glm::vec3(x, 0, z);
 }
 
@@ -60,7 +64,7 @@ void Player::reset() {
     angle = 0;
     lifePoints = 100;
     defense = 10;
-    power = 40;
+    power = 50;
     goldenKey = 0;
     silverKey = 0;
     speed = 7.5f;
@@ -102,8 +106,16 @@ void Player::reciveImpact(int d) {
             damage = 1;
         lifePoints -= damage;
         graceTime = 1.5;
-        std::cout << lifePoints << std::endl;
+        std::cout << "life points : "<<lifePoints << std::endl;
     }
+}
+
+glm::vec3 Player::direction() {
+    return glm::normalize(dir);
+}
+
+int Player::getPower() {
+    return power;
 }
 
 const float Player::radius = 1.f;

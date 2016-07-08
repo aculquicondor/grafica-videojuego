@@ -8,7 +8,7 @@ const GLfloat Game::LightDirection[4]= {-5, 10, 2, 0};
 
 Game::Game(int &argc, char **argv) :
         width(1000), height(700), mapShow(false),
-        graceTime(0) {
+        graceTime(0), shot(0),shotTime(0) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(width, height);
@@ -35,6 +35,8 @@ void Game::newGame() {
     player->reset();
     painter = new Drawable(player);
     painter->setMap(map);
+    shot = 0;
+    shotTime = 0;
 }
 
 
@@ -76,13 +78,24 @@ void Game::mainLoop() {
         room = map->serCurrent(row, col);
         painter->setRoom(room);
     }
-    player_pos = player->move(where);
 
+    player_pos = player->move(where);
+    shotTime -= delta_time;
+    if (shotTime < 0)
+        shotTime = 0;
+    if (shot) {
+        room->createBullet(player->position(), player->direction(), shot, player->getPower(), player->radius);
+        shot = 0;
+    }
     int impact = room->playerCollision(player->position(),player->radius);
     if (impact > 0){
         player->reciveImpact(impact);
         room->removeDead();
     }
+
+
+
+    /*siguiente posicion de los enemigos, como tbm la colicion con las balas*/
     room->update(delta_time, player_pos, Player::radius);
 
     if (player->getlifePoints() <= 0){
@@ -128,6 +141,21 @@ void Game::keyDown(unsigned char key, int x, int y) {
         mapShow = not mapShow;
     } else if (key == 'r') {
         newGame();
+    } else if (key == 'a'){ //disparo normal con rebote
+        if (shotTime <=0){
+            shot = 1;
+            shotTime = 0.4;
+        }
+    } else if (key == 's'){ //disparo rapido
+        if (shotTime <=0) {
+            shot = 2;
+            shotTime = 0.4;
+        }
+    } else if (key == 'd'){ //disparo doble
+        if (shotTime <=0) {
+            shot = 3;
+            shotTime = 0.4;
+        }
     }
 }
 
