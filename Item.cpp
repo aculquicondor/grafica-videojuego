@@ -4,78 +4,44 @@
 
 #include "Item.h"
 
-Item::Item(ItemType itemType): center(glm::vec3(0,0,0)) {
+Item::Item(int i): type(i){
 
-    for (int i=0; i<6 ; ++i) {
-        upgrade[i] = false;
-        myItems[i] = nullptr;
-    }
-    upgrade[itemType] = true;
-    if (itemType == TRUNK)
-        generateItemTrunk();
 }
 
-Item::Item(glm::vec3 pos, int itemType) : center(pos){
 
-    for (int i=0; i<6 ; ++i){
-        upgrade[i] = false;
-        myItems[i] = nullptr;
-    }
-    upgrade[itemType] = true;
-    if (itemType == TRUNK)
-        generateItemTrunk();
+Item::Item(glm::vec3 pos, int itemType) :
+                            cPosition(pos),
+                            type(itemType){
+
 }
 
 Item::~Item() {
-
+    for(Item* i : myItems)
+        delete i;
 }
 
 void Item::setPosition(glm::vec3 pos) {
-    center = pos;
+    cPosition = pos;
 }
 
-bool* Item::getUpgrade() {
-    return upgrade;
-}
-
-void Item::draw(){
-    if (upgrade[0]){
-        glColor3f(1,0.6,0.1); //gold
-        drawKey();
-    }else if (upgrade[1]){
-        glColor3f(0.8,0.8,0.8);
-        drawKey();
-    }else if (upgrade[2]){
-        glColor3f(1,0,0);
-        drawHeart();
-    }else if (upgrade[3]){
-        glColor3f(0.8,0.8,1);
-        drawShoe();
-    }else if (upgrade[4]){
-        glColor3f(1,1,0);
-        drawLightning();
-    }else if (upgrade[5]){
-        glColor3f(0.4,0.2,0.3);
-        drawTrunk();
+bool Item::addItem(Item *i) {
+    if (type==6){
+        myItems.push_back(i);
+        return true;
     }
+    return false;
 }
 
-void Item::drawKey() {
-
+Item* Item::getItem() {
+    if (myItems.empty())
+        return nullptr;
+    Item *i = myItems.back();
+    myItems.pop_back();
+    return i;
 }
 
-void Item::drawHeart() {
-
+int Item::getType() {
+    return type;
 }
 
-void Item::drawLightning() {
-
-}
-
-void Item::drawShoe() {
-
-}
-
-void Item::drawTrunk() {
-
-}
+const float Item::radio = 0.5f;

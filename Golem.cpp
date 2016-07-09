@@ -74,7 +74,6 @@ void Golem::changeDirection() {
 void Golem::reflectDirection(float x, float z) {
     direction.x *= x;
     direction.z *= z;
-    countDown = 1.5;
 }
 
 int Golem::getPower() {

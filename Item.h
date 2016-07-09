@@ -4,38 +4,28 @@
 #ifndef VIDEOGAME_ITEM_H
 #define VIDEOGAME_ITEM_H
 
+#include <vector>
+
 #include "glm/vec3.hpp"
 #include <GL/glut.h>
 
-
-struct ItemType {
-    GOLDEN_KEY;
-    SILVER_KEY;
-    LIFE;
-    SPEED;
-    POWER;
-    TRUNK;
-};
-
-
 class Item {
 public:
-    Item(ItemType itemType);
-    Item(glm::vec3 pos, ItemType itemType);
+    Item(int);
+    Item(glm::vec3 , int);
     ~Item();
+    static const float radio;
     void setPosition(glm::vec3 pos);
-    void draw();
-    bool* getUpgrade();
+    bool addItem(Item *);
+    Item* getItem();
+    int getType();
+
 private:
-    glm::vec3 center;
-    Item * myItems[6];
-    bool upgrade[6];
-    void drawKey();
-    void drawHeart();
-    void drawShoe();
-    void drawLightning();
-    void drawTrunk();
-    void generateItemTrunk();
+    glm::vec3 cPosition;
+    /*0=power, 1=defense, 2=speed, 3=lifepoints, 4=silverkey, 5=goldenkey 6=trunk*/
+    int type;
+    //si es un cofre tiene items almacenados
+    std::vector<Item *> myItems;
 };
 
 

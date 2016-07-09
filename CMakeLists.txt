@@ -27,6 +27,7 @@ set(SOURCE_FILES main.cpp
         Golem.cpp Golem.h
         Arbok.cpp Arbok.h
         Drawable.cpp Drawable.h
-        Bullet.cpp Bullet.h)
+        Bullet.cpp Bullet.h
+        Item.cpp Item.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})

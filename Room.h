@@ -14,6 +14,7 @@
 #include "Raticate.h"
 #include "Golem.h"
 #include "Arbok.h"
+#include "Item.h"
 
 
 class Room {
