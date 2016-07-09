@@ -6,19 +6,6 @@ GLfloat Room::diffuse[4] = {0.6,0.6,0.6,1};
 Room::Room(GLuint texture) : _seen(false), random_engine(std::random_device()()), texture(texture) {
     for (int i = 0; i < 4; ++i)
         this->doors[i] = 0;
-
-    int num_enemies = std::uniform_int_distribution<int>(0, 4)(random_engine);
-    for (int i = 0; i < num_enemies; ++i) {
-        float x = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine),
-              z = std::uniform_real_distribution<float>(-width + 1, width - 1)(random_engine);
-        int type = std::uniform_int_distribution<int>(0, 2)(random_engine);
-        if (type == 0)
-            enemies.push_back(new Raticate(glm::vec3(x, 0, z),1));
-        else if (type == 1)
-            enemies.push_back(new Golem(glm::vec3(x, 0, z),1));
-        else
-            enemies.push_back(new Arbok(glm::vec3(x, 0, z),1));
-    }
 }
 
 
@@ -150,6 +137,46 @@ void Room::createBullet(glm::vec3 pos, glm::vec3 dir, int type, int power, float
         enemies.push_back(new Bullet(pos,vec2,type,(int)(power*0.7), r));
     }else
         enemies.push_back(new Bullet(pos,dir,type,power, r));
+}
+
+void Room::generateEnemies(int lv,bool type) {
+    if (type){// salida, hay 1 boss
+        int t = std::uniform_int_distribution<int>(0, 2)(random_engine);
+        if (t == 0)
+            enemies.push_back(new Raticate(generatePosition(Raticate::radio),lv+5));
+        else if (t == 1)
+            enemies.push_back(new Golem(generatePosition(Golem::radio),lv+5));
+        else
+            enemies.push_back(new Arbok(generatePosition(Arbok::radio),lv+5));
+    }else{
+        int num_enemies = std::uniform_int_distribution<int>(1, 4)(random_engine);
+        for (int i = 0; i < num_enemies; ++i) {
+            int l = std::uniform_int_distribution<int>(0, 3)(random_engine); //level aleatorio
+            int t = std::uniform_int_distribution<int>(0, 2)(random_engine); //tipo de enemigo
+            if (t == 0)
+                enemies.push_back(new Raticate(generatePosition(Raticate::radio),lv+l));
+            else if (t == 1)
+                enemies.push_back(new Golem(generatePosition(Golem::radio),lv+l));
+            else
+                enemies.push_back(new Arbok(generatePosition(Arbok::radio),lv+l));
+        }
+    }
+}
+
+glm::vec3 Room::generatePosition(float r) {
+    glm::vec3 newPos= {0,0,0};
+    if (enemies.empty()){
+        newPos.x = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
+        newPos.z = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
+        return newPos;
+    }
+    while(1){
+        newPos.x = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
+        newPos.z = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
+        for (Enemy *enemy : enemies)
+            if (glm::length(glm::distance(enemy->position(), newPos)) > enemy->radius() + r)
+                return newPos;
+    }
 }
 
 const float Room::width = 15;

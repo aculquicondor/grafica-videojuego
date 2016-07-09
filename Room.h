@@ -49,8 +49,8 @@ public:
     }
 
     void createBullet(glm::vec3, glm::vec3, int, int, float);
-
     void removeDead();
+    void generateEnemies(int,bool);
 
 private:
     GLuint texture;
@@ -59,11 +59,11 @@ private:
 
     bool _seen;
     bool doors[];
-
     static const float doorWidth;
-
     static GLfloat ambient[4];
     static GLfloat diffuse[4];
+
+    glm::vec3 generatePosition(float);
 };
 
 
