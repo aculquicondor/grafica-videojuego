@@ -55,6 +55,7 @@ public:
 private:
     GLuint texture;
     std::vector<Enemy *> enemies;
+    std::vector<Item *> items;
     std::default_random_engine random_engine;
 
     bool _seen;
@@ -64,6 +65,7 @@ private:
     static GLfloat diffuse[4];
 
     glm::vec3 generatePosition(float);
+    bool collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2);
 };
 
 

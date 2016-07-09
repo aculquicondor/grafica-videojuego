@@ -46,8 +46,7 @@ RoomWhere Room::where(float x, float z, float radius) const {
 
 int Room::playerCollision(glm::vec3 playerPos, float r) {
     for (Enemy *enemy : enemies) {
-        glm::vec3 p = enemy->position();
-        if (glm::length(glm::distance(p, playerPos)) < enemy->radius() + r) {
+        if (collition(enemy->position(),playerPos,enemy->radius(),r)) {
             if (enemy->type() == 4)
                 enemy->receiveImpact(1);
             return enemy->getPower();
@@ -59,27 +58,23 @@ int Room::playerCollision(glm::vec3 playerPos, float r) {
 int Room::bulletCollision(Enemy *e) {
     if (e->getLifePoints() <= 0 )
         return 0;
-    for (Enemy *other_enemy : enemies){
-        if (other_enemy != e and other_enemy->type() == 4 and other_enemy->getLifePoints() > 0) {
-            glm::vec3 p = other_enemy->position();
-            if (glm::length(glm::distance(other_enemy->position(), e->position())) < other_enemy->radius() + e->radius()){
+    for (Enemy *other_enemy : enemies)
+        if (other_enemy != e and other_enemy->type() == 4 and other_enemy->getLifePoints() > 0)
+            if (collition(other_enemy->position(),e->position(),other_enemy->radius(),e->radius())){
                 other_enemy->receiveImpact(1);
                 return other_enemy->getPower();
             }
-        }
-    }
     return 0;
 }
 
 bool Room::enemiesCollision(Enemy *e, glm::vec3 nextPos) {
-    /*evitar q los enemigos se transpasen*/
+    /*evitar q los enemigos se transpasen, no contar las balas*/
     if (e->type() == 4)
         return false;
     for (Enemy *other_enemy : enemies){
         if (other_enemy != e and other_enemy->type() != 4) {
             glm::vec3 p = other_enemy->position();
-            if (glm::length(glm::distance(other_enemy->position(), nextPos)) < other_enemy->radius() + e->radius())
-                return true;
+            return collition(other_enemy->position(),nextPos,other_enemy->radius(),e->radius());
         }
     }
     return false;
@@ -170,13 +165,18 @@ glm::vec3 Room::generatePosition(float r) {
         newPos.z = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
         return newPos;
     }
-    while(1){
+
+    int i = 0;
+    while(i != enemies.size()){
         newPos.x = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
         newPos.z = std::uniform_real_distribution<float>(-width*0.5f, width*0.5f)(random_engine);
-        for (Enemy *enemy : enemies)
-            if (glm::length(glm::distance(enemy->position(), newPos)) > enemy->radius() + r)
-                return newPos;
-    }
+        for (i=0 ; i<enemies.size() and !collition(enemies[i]->position(),newPos,enemies[i]->radius(),r); ++i){}
+    };
+    return newPos;
+}
+
+bool Room::collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) {
+    return glm::length(glm::distance(pos1, pos2)) <= r1+r2;
 }
 
 const float Room::width = 15;
