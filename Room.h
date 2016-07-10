@@ -14,6 +14,8 @@
 #include "Raticate.h"
 #include "Golem.h"
 #include "Arbok.h"
+#include "Bullet.h"
+#include "TreasureChest.h"
 #include "Item.h"
 
 
@@ -43,14 +45,21 @@ public:
     Enemy * getEnemy(int i){
         return enemies[i];
     }
+    Item * getItem(int i){
+        return items[i];
+    }
 
     int enemiesSize(){
         return enemies.size();
+    }
+    int itemsSize(){
+        return items.size();
     }
 
     void createBullet(glm::vec3, glm::vec3, int, int, float);
     void removeDead();
     void generateEnemies(int,bool);
+    void generateItems();
 
 private:
     GLuint texture;
@@ -65,7 +74,7 @@ private:
     static GLfloat diffuse[4];
 
     glm::vec3 generatePosition(float);
-    bool collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2);
+    bool collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) const ;
 };
 
 

@@ -41,6 +41,11 @@ RoomWhere Room::where(float x, float z, float radius) const {
         return N_COLLISION;
     }
 
+    for (Enemy *enemy : enemies) { //cofres
+        if (enemy->type()==5 and collition(enemy->position(),glm::vec3(x,0,z),enemy->radius(),radius)) {
+            return COLLISION;
+        }
+    }
     return CAN_BE;
 }
 
@@ -94,9 +99,10 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
     for (Enemy *enemy : enemies) {
         glm::vec3 nextpos = enemy->stepTest(time, player_pos);
         RoomWhere npos = where(nextpos.x, nextpos.z, enemy->radius());
-        if (npos == CAN_BE and !enemiesCollision(enemy,nextpos)){
+        if (npos == CAN_BE  and !enemiesCollision(enemy,nextpos))
             enemy->step();
-        }
+        else if(npos == COLLISION and enemy->type() == 4)
+            enemy->step();
         else if (npos == E_COLLISION or npos == W_COLLISION)
             enemy->reflectDirection(-1,1);
         else if (npos == N_COLLISION or npos == S_COLLISION)
@@ -136,24 +142,27 @@ void Room::createBullet(glm::vec3 pos, glm::vec3 dir, int type, int power, float
 
 void Room::generateEnemies(int lv,bool type) {
     if (type){// salida, hay 1 boss
-        int t = std::uniform_int_distribution<int>(0, 2)(random_engine);
+        int t = std::uniform_int_distribution<int>(0, 3)(random_engine); //tipo de enemigo
         if (t == 0)
             enemies.push_back(new Raticate(generatePosition(Raticate::radio),lv+5));
         else if (t == 1)
             enemies.push_back(new Golem(generatePosition(Golem::radio),lv+5));
-        else
+        else if (t== 2)
             enemies.push_back(new Arbok(generatePosition(Arbok::radio),lv+5));
+
     }else{
         int num_enemies = std::uniform_int_distribution<int>(1, 4)(random_engine);
         for (int i = 0; i < num_enemies; ++i) {
             int l = std::uniform_int_distribution<int>(0, 3)(random_engine); //level aleatorio
-            int t = std::uniform_int_distribution<int>(0, 2)(random_engine); //tipo de enemigo
+            int t = std::uniform_int_distribution<int>(0, 3)(random_engine); //tipo de enemigo
             if (t == 0)
                 enemies.push_back(new Raticate(generatePosition(Raticate::radio),lv+l));
             else if (t == 1)
                 enemies.push_back(new Golem(generatePosition(Golem::radio),lv+l));
-            else
+            else if (t== 2)
                 enemies.push_back(new Arbok(generatePosition(Arbok::radio),lv+l));
+            else
+            enemies.push_back(new TreasureChest(generatePosition(Arbok::radio)));
         }
     }
 }
@@ -175,9 +184,11 @@ glm::vec3 Room::generatePosition(float r) {
     return newPos;
 }
 
-bool Room::collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) {
+bool Room::collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) const {
     return glm::length(glm::distance(pos1, pos2)) <= r1+r2;
 }
+
+void Room::generateItems() { }
 
 const float Room::width = 15;
 

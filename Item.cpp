@@ -16,28 +16,11 @@ Item::Item(glm::vec3 pos, int itemType) :
 }
 
 Item::~Item() {
-    for(Item* i : myItems)
-        delete i;
+
 }
 
 void Item::setPosition(glm::vec3 pos) {
     cPosition = pos;
-}
-
-bool Item::addItem(Item *i) {
-    if (type==6){
-        myItems.push_back(i);
-        return true;
-    }
-    return false;
-}
-
-Item* Item::getItem() {
-    if (myItems.empty())
-        return nullptr;
-    Item *i = myItems.back();
-    myItems.pop_back();
-    return i;
 }
 
 int Item::getType() {

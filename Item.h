@@ -16,16 +16,17 @@ public:
     ~Item();
     static const float radio;
     void setPosition(glm::vec3 pos);
-    bool addItem(Item *);
-    Item* getItem();
     int getType();
+
+    glm::vec3 position() const {
+        return cPosition;
+    }
 
 private:
     glm::vec3 cPosition;
-    /*0=power, 1=defense, 2=speed, 3=lifepoints, 4=silverkey, 5=goldenkey 6=trunk*/
+    /*0=power, 1=defense, 2=speed, 3=lifepoints, 4=silverkey, 5=goldenkey*/
     int type;
     //si es un cofre tiene items almacenados
-    std::vector<Item *> myItems;
 };
 
 

@@ -17,7 +17,7 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
     dfs(start_r, start_c, 0, 1);
     map[start_r][start_c]->discover();
     currentRoom = map[start_r][start_c];
-
+    /*generar enemigos*/
     for (int i = 0; i < rows; ++i)
         for (int j = 0; j < cols; ++j)
             if (map[i][j]) {

@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-#include "Model.h"
 #include "Room.h"
 
 using namespace std;

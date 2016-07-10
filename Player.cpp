@@ -31,9 +31,11 @@ glm::vec3 Player::moveTest(float time) {
 }
 
 glm::vec3 Player::move(RoomWhere where) {
-    if (where == CAN_BE or where == COLLISION) {
+    if (where == CAN_BE) {
         x = nx;
         z = nz;
+    } else if(where == COLLISION){
+        //nothig
     } else if (where == N_DOOR) {
         z = Room::width - radius;
     } else if (where == S_DOOR) {

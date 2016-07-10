@@ -10,7 +10,6 @@
 #include <glm/gtx/vector_angle.hpp>
 
 #include "Enemy.h"
-#include "Bullet.h"
 #include "Room.h"
 
 class Arbok : public Enemy

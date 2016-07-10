@@ -2,7 +2,7 @@
 #define VIDEOGAME_ENEMY_H
 
 #include <glm/vec3.hpp>
-#include "Model.h"
+#include "Item.h"
 
 class Enemy {
 public:

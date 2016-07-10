@@ -38,9 +38,14 @@ void Drawable::draw() {
     glMaterialfv(GL_FRONT,GL_DIFFUSE,diffuseGround);
 
     drawRoom(myRoom);
+
     int enemysize = myRoom->enemiesSize();
     for (int i=0 ; i<enemysize ; ++i)
         drawEnemies(myRoom->getEnemy(i));
+
+    int itemsize = myRoom->itemsSize();
+    for (int i=0 ; i<itemsize ; ++i)
+        drawItem(myRoom->getItem(i));
 
     drawPlayer();
 }
@@ -221,14 +226,16 @@ void Drawable::drawEnemies(Enemy * e) {
         glRotatef(angle * 57.2957f, 0, 1, 0);
         glRotated(90, 1, 0, 0);
         myModels[3]->draw();
-    }else if (e->type() == 4){
+    }else if (e->type() == 4){ // balas
         glColor3f(0.45f, 0.1f, 0.5f);
         glTranslatef(0,1,0);
         glutSolidSphere(e->radius(),10,10);
         //std::cout<< pos.x<<" "<<pos.z<<std::endl;
+    } else if (e->type() == 5){ // cofre
+        glColor3f(1, 1, 1);
+        glTranslatef(0,1,0);
+        glutSolidSphere(e->radius(),10,10);
     }
-
-
 
     glPopMatrix();
 }
@@ -247,12 +254,9 @@ void Drawable::drawPlayer() {
     glPopMatrix();
 }
 
-
-/*
-if (bullet.alive){
-glPushMatrix();
-glTranslatef(bullet.position.x,0, bullet.position.z);
-glColor3f(1, 1, 1);
-glutSolidSphere(bullet.radio,10,10);
-glPopMatrix();
-}*/
+void Drawable::drawItem(Item * i) {
+    glm::vec3 pos = i->position();
+    glColor3f(1, 1, 1);
+    glTranslatef(pos.x,1,pos.z);
+    glutSolidSphere(Item::radio,10,10);
+}
