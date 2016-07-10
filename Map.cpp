@@ -14,7 +14,16 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
 
     start_r = std::uniform_int_distribution<int>(0, rows - 1)(random_engine);
     start_c = std::uniform_int_distribution<int>(0, cols - 1)(random_engine);
-    dfs(start_r, start_c, 0, 1, std::uniform_int_distribution<std::size_t>(10, 20)(random_engine));
+    std::size_t rooms = std::uniform_int_distribution<std::size_t>(10, 20)(random_engine);
+    while (rooms - dfs(start_r, start_c, 0, 1, rooms) < 10) {
+        for (int i = 0; i < rows; ++i)
+            for (int j = 0; j < cols; ++j)
+                if (map[i][j]) {
+                    delete map[i][j];
+                    map[i][j] = nullptr;
+                }
+        myRooms.clear();
+    }
     map[start_r][start_c]->discover();
     currentRoom = map[start_r][start_c];
 
