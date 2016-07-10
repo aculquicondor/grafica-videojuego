@@ -3,7 +3,9 @@
 //
 
 #include "TreasureChest.h"
-TreasureChest::TreasureChest(glm::vec3 pos):cPosition(pos) {
+TreasureChest::TreasureChest(glm::vec3 pos):
+                            cPosition(pos),
+                            lifePoints(1){
 
 }
 

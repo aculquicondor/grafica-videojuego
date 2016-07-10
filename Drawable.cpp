@@ -256,7 +256,9 @@ void Drawable::drawPlayer() {
 
 void Drawable::drawItem(Item * i) {
     glm::vec3 pos = i->position();
-    glColor3f(1, 1, 1);
+    glColor3f(1, 0.7, 0.7);
+    glPushMatrix();
     glTranslatef(pos.x,1,pos.z);
     glutSolidSphere(Item::radio,10,10);
+    glPopMatrix();
 }

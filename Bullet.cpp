@@ -57,4 +57,8 @@ void Bullet::receiveImpact(int damage) {
     lifePoints = 0;
 }
 
+Item* Bullet::getItem() {
+    return nullptr;
+}
+
 const float Bullet::radio = 0.5f;

@@ -76,6 +76,7 @@ private:
 
     glm::vec3 generatePosition(float);
     bool collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) const ;
+    void getEnemyItems(Enemy *e);
 };
 
 

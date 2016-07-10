@@ -44,7 +44,7 @@ public:
     int getLifePoints();
     void receiveImpact(int);
     void createItem(int typeItem){};
-    Item* getItem(){};
+    Item* getItem();
 };
 
 

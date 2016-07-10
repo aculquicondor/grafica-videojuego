@@ -22,18 +22,21 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
     for (int i=1 ; i<myRooms.size()-1 ; ++i)
         myRooms[i]->generateEnemies(0, false);
     myRooms.back()->generateEnemies(0, true); //boss
+    /*generar items en los enemigos*/
+    for (int i=1 ; i<myRooms.size() ; ++i)
+        myRooms[i]->generateItems(0);
     /*generar llaves*/
-    vector<int> list = generateRandomList(1,myRooms.size()-1,3); // 3 llaves/
-    myRooms[list[0]]->generateItems(1); // 1 golden key
-    for (int i=1 ; i<6 ; ++i) // 2 silver keys
-        myRooms[list[i]]->generateItems(2);
-    for (int i=6 ; i<list.size() ; ++i)
-        myRooms[list[i]]->generateItems(0);
-    myRooms.back()->generateItems(0);
+    for (int i=0 ; i< 6; ++i){ // llaves plateadas
+        int ran = std::uniform_int_distribution<int>(1, myRooms.size()-1)(random_engine);
+        myRooms[ran]->generateItems(2);
+    }
+    int ran = std::uniform_int_distribution<int>(1, myRooms.size()-1)(random_engine);
+    myRooms[ran]->generateItems(1); // llave dorada
     /* generar cofres*/
-    list = generateRandomList(1,myRooms.size()-1,2); // 2 cofres
-    for (int i=0 ; i<5 ; ++i) // 5 cofres
-        myRooms[list[i]]->generateTreasureChest();
+    for (int i=0 ; i<4 ; ++i){// 4 cofres
+        ran = std::uniform_int_distribution<int>(1, myRooms.size()-1)(random_engine);
+        myRooms[ran]->generateTreasureChest();
+    }
 }
 
 

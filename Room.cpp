@@ -122,6 +122,7 @@ void Room::update(float time, glm::vec3 player_pos) {
 void Room::removeDead() {
     for (int i=0 ; i<enemies.size() ; ++i){
         if (enemies[i]->getLifePoints() <= 0){
+            getEnemyItems(enemies[i]);
             enemies.erase(enemies.begin()+i);
             --i;
         }
@@ -185,20 +186,18 @@ bool Room::collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) const {
 }
 
 void Room::generateItems(int key) {
-    int i=1;
-    if (key == 1)
-        enemies[0]->createItem(5);
-    else if (key == 2)
-        enemies[0]->createItem(4);
-    else
-        i = 0;
-    for ( ; i<enemies.size() ; ++i){
+    for (int i=0 ; i<enemies.size() ; ++i){
         int ran = std::uniform_int_distribution<int>(0,2)(random_engine); //probabilidad de llevar objeto
         if (ran == 0){
             int item = std::uniform_int_distribution<int>(0,3)(random_engine);
             enemies[i]->createItem(item);
         }
     }
+    int item = std::uniform_int_distribution<int>(0,enemies.size()-1)(random_engine);
+    if (key == 1) //golden
+        enemies[item]->createItem(5);
+    else if (key == 2) //silver
+        enemies[item]->createItem(4);
 }
 
 void Room::generateTreasureChest() {
@@ -206,6 +205,17 @@ void Room::generateTreasureChest() {
     for (int i=0 ; i<6 ;++i){ // 6 tesoros en el cofre
         int t = std::uniform_int_distribution<int>(0,3)(random_engine);
         enemies.back()->createItem(t);
+    }
+}
+
+void Room::getEnemyItems(Enemy *e) {
+    Item* i = e->getItem();
+    glm::vec3 pos = e->position();
+    while(i){
+        std::cout<<"item soltado"<<std::endl;
+        items.push_back(i);
+        i->setPosition(pos);
+        i = e->getItem();
     }
 }
 

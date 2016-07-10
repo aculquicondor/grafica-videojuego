@@ -12,6 +12,7 @@ GLfloat Raticate::diffuse[4] = {.7f, .7f, .3f, 1};
 Raticate::Raticate(glm::vec3 pos_actual, int lv) :
                             pos_actual(pos_actual),
                             angle(0),
+                            myItem(nullptr),
                             level(lv){
     // base + nivel*constante
     speed = 2.5f + lv * 0.35f;
@@ -56,11 +57,16 @@ void Raticate::receiveImpact(int attack) {
 }
 
 void Raticate::createItem(int typeItem) {
+    if (myItem)
+        delete myItem;
     myItem = new Item(typeItem);
 }
 
 Item* Raticate::getItem() {
-    return myItem;
+    Item* i = myItem;
+    myItem = nullptr;
+    return  i;
 }
+
 
 const float Raticate::radio = 1.f;

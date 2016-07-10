@@ -103,11 +103,16 @@ void Arbok::receiveImpact(int attack) {
 }
 
 void Arbok::createItem(int typeItem) {
+    if (myItem)
+        delete myItem;
     myItem = new Item(typeItem);
 }
 
 Item* Arbok::getItem() {
-    return myItem;
+    Item* i = myItem;
+    myItem = nullptr;
+    return  i;
 }
+
 
 const float Arbok::radio = 1.f;

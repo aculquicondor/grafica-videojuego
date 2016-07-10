@@ -13,6 +13,7 @@ Golem::Golem(glm::vec3 pos, int lv):
         cPosition(pos),
         countDown(1.5),
         level(lv),
+        myItem(nullptr),
         random_engine(std::random_device()()),
         rolling(false){
     // base + nivel*constante
@@ -95,11 +96,15 @@ void Golem::receiveImpact(int attack) {
 }
 
 void Golem::createItem(int typeItem) {
+    if (myItem)
+        delete myItem;
     myItem = new Item(typeItem);
 }
 
 Item* Golem::getItem() {
-    return myItem;
+    Item* i = myItem;
+    myItem = nullptr;
+    return  i;
 }
 
 const float Golem::radio = 1.f;
