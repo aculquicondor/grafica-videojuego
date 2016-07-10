@@ -8,13 +8,6 @@ Item::Item(int i): type(i){
 
 }
 
-
-Item::Item(glm::vec3 pos, int itemType) :
-                            cPosition(pos),
-                            type(itemType){
-
-}
-
 Item::~Item() {
 
 }

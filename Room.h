@@ -32,7 +32,7 @@ public:
     int playerCollision(glm::vec3, float);
     bool enemiesCollision(Enemy*, glm::vec3);
     int bulletCollision(Enemy*);
-    void update(float time, glm::vec3 player_pos, float player_radius);
+    void update(float time, glm::vec3 player_pos);
 
     void discover() {
         _seen = true;
@@ -59,7 +59,8 @@ public:
     void createBullet(glm::vec3, glm::vec3, int, int, float);
     void removeDead();
     void generateEnemies(int,bool);
-    void generateItems();
+    void generateItems(int key);
+    void generateTreasureChest();
 
 private:
     GLuint texture;

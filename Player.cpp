@@ -8,7 +8,7 @@ GLfloat Player::diffuse[4] = {.9f, .9f, 0, 1};
 Player::Player() :
         x(0), z(0), topDown(0), leftRight(0), mv_x(0), mv_z(0){
     lifePoints = 100;
-    defense = 10;
+    defense = 30;
     power = 50;
     goldenKey = 0;
     silverKey = 0;
@@ -100,15 +100,15 @@ glm::vec3 Player::position() const {
     return glm::vec3(x, 0, z);
 }
 
-void Player::reciveImpact(int d) {
-    if (d == 0) return;
+void Player::reciveImpact(int attack) {
+    if (attack == 0) return;
     if (graceTime <= 0){
-        int damage = d-defense;
-        if(damage<1)
-            damage = 1;
+        float damage = 0.5f + 15.0f * (float)attack/(float)defense;
         lifePoints -= damage;
         graceTime = 1.5;
         std::cout << "life points : "<<lifePoints << std::endl;
+        std::cout << "attack : "<<attack << std::endl;
+        std::cout << "defense : "<<defense << std::endl;
     }
 }
 

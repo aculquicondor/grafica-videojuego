@@ -16,6 +16,7 @@
 class Golem : public Enemy {
 public:
     Golem(glm::vec3, int);
+    ~Golem();
 
     std::default_random_engine random_engine;
     static const float radio;
@@ -42,6 +43,8 @@ public:
     int getPower();
     int getLifePoints();
     void receiveImpact(int);
+    void createItem(int typeItem);
+    Item* getItem();
 
 private:
     void changeDirection();
@@ -54,7 +57,7 @@ private:
     int defense;
     int power;
     int level;
-
+    Item* myItem;
 };
 
 #endif //VIDEOGAME_GOLEM_H

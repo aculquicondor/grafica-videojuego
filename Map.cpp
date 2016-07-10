@@ -17,19 +17,28 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
     dfs(start_r, start_c, 0, 1);
     map[start_r][start_c]->discover();
     currentRoom = map[start_r][start_c];
+
     /*generar enemigos*/
-    for (int i = 0; i < rows; ++i)
-        for (int j = 0; j < cols; ++j)
-            if (map[i][j]) {
-                if (map[i][j] == map[exit_r][exit_c])
-                    map[i][j]->generateEnemies(0, true);
-                else if (map[i][j] != map[start_r][start_c])
-                    map[i][j]->generateEnemies(0, false);
-            }
+    for (int i=1 ; i<myRooms.size()-1 ; ++i)
+        myRooms[i]->generateEnemies(0, false);
+    myRooms.back()->generateEnemies(0, true); //boss
+    /*generar llaves*/
+    vector<int> list = generateRandomList(1,myRooms.size()-1,3); // 3 llaves/
+    myRooms[list[0]]->generateItems(1); // 1 golden key
+    for (int i=1 ; i<6 ; ++i) // 2 silver keys
+        myRooms[list[i]]->generateItems(2);
+    for (int i=6 ; i<list.size() ; ++i)
+        myRooms[list[i]]->generateItems(0);
+    myRooms.back()->generateItems(0);
+    /* generar cofres*/
+    list = generateRandomList(1,myRooms.size()-1,2); // 2 cofres
+    for (int i=0 ; i<5 ; ++i) // 5 cofres
+        myRooms[list[i]]->generateTreasureChest();
 }
 
 
 Map::~Map() {
+    myRooms.clear();
     currentRoom = nullptr;
     for (int i = 0; i < rows; ++i)
         for (int j = 0; j < cols; ++j)
@@ -50,6 +59,7 @@ void Map::dfs(int r, int c, int dir, double prob) {
     exit_c = c;
     int nr, nc;
     map[r][c] = new Room(room_texture);
+    myRooms.push_back(map[r][c]);
     for (int i = 0; i < 4; ++i) {
         int j = (dir + i) % 4;
         nr = r + dr[j];
@@ -81,4 +91,15 @@ Room* Map::serCurrent(int r, int c) {
     currentRoom = map[r][c];
     currentRoom->discover();
     return currentRoom;
+}
+
+vector<int> Map::generateRandomList(int min, int max, int iter) {
+    vector<int> list(max-min,0);
+    for (int i=0 ; i<list.size() ; ++i)
+        list[i] = i+min;
+    for (int i=0 ; i<iter ;++i){
+        int ran = std::uniform_int_distribution<int>(i, list.size()-1)(random_engine);
+        swap(list[i],list[ran]);
+    }
+    return list;
 }

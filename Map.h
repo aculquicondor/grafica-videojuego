@@ -2,6 +2,7 @@
 #define VIDEOGAME_MAP_H
 
 #include <random>
+#include <vector>
 
 #include <glm/vec2.hpp>
 
@@ -50,6 +51,8 @@ private:
     std::default_random_engine random_engine;
     GLuint room_texture;
     Room * currentRoom;
+    vector<Room *> myRooms; //el primer elemento es el estar y el ultimo es exit
+    vector<int> generateRandomList(int min, int max, int iter);
 
     bool valid(int r, int c);
     void dfs(int r, int c, int dir, double prob);

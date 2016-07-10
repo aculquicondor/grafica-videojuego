@@ -20,6 +20,11 @@ Raticate::Raticate(glm::vec3 pos_actual, int lv) :
     lifePoints = 100 + lv * 20;
 }
 
+Raticate::~Raticate() {
+    if (myItem)
+        delete myItem;
+}
+
 glm::vec3 Raticate::stepTest(float time, glm::vec3 pos_player)
 {
     glm::vec3 vector = pos_player - pos_actual;
@@ -45,11 +50,17 @@ int Raticate::getLifePoints() {
     return lifePoints;
 }
 
-void Raticate::receiveImpact(int d) {
-    int damage = d-defense;
-    if (damage<1)
-        damage = 1;
+void Raticate::receiveImpact(int attack) {
+    float damage = 0.5f + 15.0f * (float)attack/(float)defense;
     lifePoints -= damage;
+}
+
+void Raticate::createItem(int typeItem) {
+    myItem = new Item(typeItem);
+}
+
+Item* Raticate::getItem() {
+    return myItem;
 }
 
 const float Raticate::radio = 1.f;

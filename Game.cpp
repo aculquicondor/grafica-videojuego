@@ -96,7 +96,7 @@ void Game::mainLoop() {
 
 
     /*siguiente posicion de los enemigos, como tbm la colicion con las balas*/
-    room->update(delta_time, player_pos, Player::radius);
+    room->update(delta_time, player_pos);
 
     if (player->getlifePoints() <= 0){
         newGame();

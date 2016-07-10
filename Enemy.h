@@ -16,6 +16,8 @@ public:
     virtual int getLifePoints() = 0;
     virtual int getPower() = 0;
     virtual void receiveImpact(int) = 0;
+    virtual void createItem(int) = 0;
+    virtual Item* getItem() = 0;
 };
 
 

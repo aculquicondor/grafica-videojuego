@@ -12,7 +12,6 @@
 class Item {
 public:
     Item(int);
-    Item(glm::vec3 , int);
     ~Item();
     static const float radio;
     void setPosition(glm::vec3 pos);

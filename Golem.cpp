@@ -23,6 +23,11 @@ Golem::Golem(glm::vec3 pos, int lv):
     changeDirection();
 }
 
+Golem::~Golem() {
+    if (myItem)
+        delete myItem;
+}
+
 glm::vec3 Golem::stepTest(float time, glm::vec3 playerPosition)
 {
     countDown -= time;
@@ -84,11 +89,17 @@ int Golem::getLifePoints() {
     return lifePoints;
 }
 
-void Golem::receiveImpact(int d) {
-    int damage = d-defense;
-    if (damage<1)
-        damage = 1;
+void Golem::receiveImpact(int attack) {
+    float damage = 0.5f + 15.0f * (float)attack/(float)defense;;
     lifePoints -= damage;
+}
+
+void Golem::createItem(int typeItem) {
+    myItem = new Item(typeItem);
+}
+
+Item* Golem::getItem() {
+    return myItem;
 }
 
 const float Golem::radio = 1.f;

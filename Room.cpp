@@ -1,7 +1,7 @@
 #include "Room.h"
 
-GLfloat Room::ambient[4] = {.5, .5, .5,1};
-GLfloat Room::diffuse[4] = {0.6,0.6,0.6,1};
+GLfloat Room::ambient[4] = {.5f, .5f, .5f,1};
+GLfloat Room::diffuse[4] = {0.6f,0.6f,0.6f,1};
 
 Room::Room(GLuint texture) : _seen(false), random_engine(std::random_device()()), texture(texture) {
     for (int i = 0; i < 4; ++i)
@@ -24,19 +24,19 @@ bool Room::getDoor(int id) {
 
 RoomWhere Room::where(float x, float z, float radius) const {
     if (x + radius > Room::width) {
-        if (doors[1] and abs(z) < doorWidth)
+        if (doors[1] and glm::abs(z) < doorWidth)
             return E_DOOR;
         return E_COLLISION;
     } if (x - radius < -Room::width) {
-        if (doors[3] and abs(z) < doorWidth)
+        if (doors[3] and glm::abs(z) < doorWidth)
             return W_DOOR;
         return W_COLLISION;
     } if (z + radius > Room::width) {
-        if (doors[2] and abs(x) < doorWidth)
+        if (doors[2] and glm::abs(x) < doorWidth)
             return S_DOOR;
         return S_COLLISION;
     } if (z - radius < -Room::width) {
-        if (doors[0] and abs(x) < doorWidth)
+        if (doors[0] and glm::abs(x) < doorWidth)
             return N_DOOR;
         return N_COLLISION;
     }
@@ -77,15 +77,13 @@ bool Room::enemiesCollision(Enemy *e, glm::vec3 nextPos) {
     if (e->type() == 4)
         return false;
     for (Enemy *other_enemy : enemies){
-        if (other_enemy != e and other_enemy->type() != 4) {
-            glm::vec3 p = other_enemy->position();
+        if (other_enemy != e and other_enemy->type() != 4)
             return collition(other_enemy->position(),nextPos,other_enemy->radius(),e->radius());
-        }
     }
     return false;
 }
 
-void Room::update(float time, glm::vec3 player_pos, float player_radius) {
+void Room::update(float time, glm::vec3 player_pos) {
     /*CREACION DE BALAS*/
     for (Enemy *enemy : enemies){
         if (enemy->type() == 3 and ((Arbok*)enemy)->isShooting()){ // Arbok, puede tener una bala
@@ -107,7 +105,7 @@ void Room::update(float time, glm::vec3 player_pos, float player_radius) {
             enemy->reflectDirection(-1,1);
         else if (npos == N_COLLISION or npos == S_COLLISION)
             enemy->reflectDirection(1,-1);
-        else if (npos > CAN_BE and enemy->type() == 4)
+        else if (npos > CAN_BE and enemy->type() == 4) //bala muere en las puertas
             enemy->receiveImpact(1);
     }
 
@@ -142,7 +140,7 @@ void Room::createBullet(glm::vec3 pos, glm::vec3 dir, int type, int power, float
 
 void Room::generateEnemies(int lv,bool type) {
     if (type){// salida, hay 1 boss
-        int t = std::uniform_int_distribution<int>(0, 3)(random_engine); //tipo de enemigo
+        int t = std::uniform_int_distribution<int>(0, 2)(random_engine); //tipo de enemigo
         if (t == 0)
             enemies.push_back(new Raticate(generatePosition(Raticate::radio),lv+5));
         else if (t == 1)
@@ -154,15 +152,13 @@ void Room::generateEnemies(int lv,bool type) {
         int num_enemies = std::uniform_int_distribution<int>(1, 4)(random_engine);
         for (int i = 0; i < num_enemies; ++i) {
             int l = std::uniform_int_distribution<int>(0, 3)(random_engine); //level aleatorio
-            int t = std::uniform_int_distribution<int>(0, 3)(random_engine); //tipo de enemigo
+            int t = std::uniform_int_distribution<int>(0, 2)(random_engine); //tipo de enemigo
             if (t == 0)
                 enemies.push_back(new Raticate(generatePosition(Raticate::radio),lv+l));
             else if (t == 1)
                 enemies.push_back(new Golem(generatePosition(Golem::radio),lv+l));
-            else if (t== 2)
-                enemies.push_back(new Arbok(generatePosition(Arbok::radio),lv+l));
             else
-            enemies.push_back(new TreasureChest(generatePosition(Arbok::radio)));
+                enemies.push_back(new Arbok(generatePosition(Arbok::radio),lv+l));
         }
     }
 }
@@ -188,7 +184,30 @@ bool Room::collition(glm::vec3 pos1, glm::vec3 pos2, float r1, float r2) const {
     return glm::length(glm::distance(pos1, pos2)) <= r1+r2;
 }
 
-void Room::generateItems() { }
+void Room::generateItems(int key) {
+    int i=1;
+    if (key == 1)
+        enemies[0]->createItem(5);
+    else if (key == 2)
+        enemies[0]->createItem(4);
+    else
+        i = 0;
+    for ( ; i<enemies.size() ; ++i){
+        int ran = std::uniform_int_distribution<int>(0,2)(random_engine); //probabilidad de llevar objeto
+        if (ran == 0){
+            int item = std::uniform_int_distribution<int>(0,3)(random_engine);
+            enemies[i]->createItem(item);
+        }
+    }
+}
+
+void Room::generateTreasureChest() {
+    enemies.push_back(new TreasureChest(generatePosition(TreasureChest::radio)));
+    for (int i=0 ; i<6 ;++i){ // 6 tesoros en el cofre
+        int t = std::uniform_int_distribution<int>(0,3)(random_engine);
+        enemies.back()->createItem(t);
+    }
+}
 
 const float Room::width = 15;
 

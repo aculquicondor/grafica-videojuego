@@ -16,6 +16,7 @@ Arbok::Arbok(glm::vec3 pos, int lv):
         //bullet(nullptr),
         shootingTime(0),
         myShot(false),
+        myItem(nullptr),
         random_engine(std::random_device()()){
 
     // base + nivel*constante
@@ -27,7 +28,8 @@ Arbok::Arbok(glm::vec3 pos, int lv):
 }
 
 Arbok::~Arbok() {
-
+    if (myItem)
+        delete myItem;
 }
 
 glm::vec3 Arbok::stepTest(float time, glm::vec3 playerPosition) {
@@ -95,11 +97,17 @@ int Arbok::getLifePoints() {
     return lifePoints;
 }
 
-void Arbok::receiveImpact(int d) {
-    int damage = d-defense;
-    if (damage<1)
-        damage = 1;
+void Arbok::receiveImpact(int attack) {
+    float damage = 0.5f + 15.0f * (float)attack/(float)defense;
     lifePoints -= damage;
+}
+
+void Arbok::createItem(int typeItem) {
+    myItem = new Item(typeItem);
+}
+
+Item* Arbok::getItem() {
+    return myItem;
 }
 
 const float Arbok::radio = 1.f;

@@ -43,6 +43,8 @@ public:
     int getPower();
     int getLifePoints();
     void receiveImpact(int);
+    void createItem(int typeItem){};
+    Item* getItem(){};
 };
 
 

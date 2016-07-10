@@ -5,6 +5,7 @@
 #ifndef VIDEOGAME_TREASURECHEST_H
 #define VIDEOGAME_TREASURECHEST_H
 
+#include <vector>
 #include <glm/vec3.hpp>
 #include "Enemy.h"
 #include "Item.h"
@@ -27,11 +28,14 @@ public:
     int getLifePoints();
     int getPower();
     void receiveImpact(int){};
+    void createItem(int typeItem);
+    Item* getItem();
 
 private:
     glm::vec3 cPosition;
     float angle;
     int lifePoints;
+    std::vector<Item*> myItems;
 };
 
 

@@ -13,6 +13,7 @@ class Raticate : public Enemy
 {
 public:
     Raticate(glm::vec3 pos_actual, int);
+    ~Raticate();
     static const float radio;
     glm::vec3 stepTest(float time, glm::vec3 pos_player);
     void step();
@@ -36,6 +37,8 @@ public:
     int getPower();
     int getLifePoints();
     void receiveImpact(int);
+    void createItem(int typeItem);
+    Item* getItem();
 
 private:
     float speed;
@@ -45,6 +48,7 @@ private:
     int lifePoints;
     int defense;
     int level;
+    Item* myItem;
 };
 
 

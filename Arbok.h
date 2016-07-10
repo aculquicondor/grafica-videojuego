@@ -52,6 +52,8 @@ public:
     int getPower();
     int getLifePoints();
     void receiveImpact(int);
+    void createItem(int typeItem);
+    Item* getItem();
 
 private:
     glm::vec3 cPosition, nextpos;;
@@ -66,6 +68,7 @@ private:
     int defense;
     int power;
     int level;
+    Item* myItem;
 };
 
 

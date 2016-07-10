@@ -8,7 +8,9 @@ TreasureChest::TreasureChest(glm::vec3 pos):cPosition(pos) {
 }
 
 TreasureChest::~TreasureChest() {
-
+    for (Item* i : myItems)
+        delete i;
+    myItems.clear();
 }
 
 glm::vec3 TreasureChest::position() const {
@@ -33,6 +35,18 @@ int TreasureChest::getLifePoints() {
 
 int TreasureChest::getPower() {
     return 1;
+}
+
+void TreasureChest::createItem(int typeItem) {
+    myItems.push_back(new Item(typeItem));
+}
+
+Item* TreasureChest::getItem() {
+    if (myItems.empty())
+        return nullptr;
+    Item* i = myItems.back();
+    myItems.pop_back();
+    return i;
 }
 
 const float TreasureChest::radio = 0.5f;
