@@ -55,7 +55,7 @@ private:
     vector<int> generateRandomList(int min, int max, int iter);
 
     bool valid(int r, int c);
-    void dfs(int r, int c, int dir, double prob);
+    std::size_t dfs(int r, int c, int dir, double prob, std::size_t rooms);
 };
 
 

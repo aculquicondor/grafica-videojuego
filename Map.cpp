@@ -14,7 +14,7 @@ Map::Map(int rows, int cols) : rows(rows), cols(cols),
 
     start_r = std::uniform_int_distribution<int>(0, rows - 1)(random_engine);
     start_c = std::uniform_int_distribution<int>(0, cols - 1)(random_engine);
-    dfs(start_r, start_c, 0, 1);
+    dfs(start_r, start_c, 0, 1, std::uniform_int_distribution<std::size_t>(10, 20)(random_engine));
     map[start_r][start_c]->discover();
     currentRoom = map[start_r][start_c];
 
@@ -57,25 +57,27 @@ bool Map::valid(int r, int c) {
 }
 
 
-void Map::dfs(int r, int c, int dir, double prob) {
+std::size_t Map::dfs(int r, int c, int dir, double prob, std::size_t rooms) {
     exit_r = r;
     exit_c = c;
     int nr, nc;
     map[r][c] = new Room(room_texture);
     myRooms.push_back(map[r][c]);
-    for (int i = 0; i < 4; ++i) {
+    if (--rooms == 0)
+        return 0;
+    for (int i = 0; i < 4 and rooms > 0; ++i) {
         int j = (dir + i) % 4;
         nr = r + dr[j];
         nc = c + dc[j];
-        if (valid(nr, nc) and
-                std::uniform_real_distribution<double>()(random_engine) <
-                        (((dir ^ j) & 1) ? prob * .5 : prob)) {
+        double probability = i > 1 ? 1 : (((dir ^ j) & 1) ? prob * .5 : prob);
+        if (valid(nr, nc) and std::uniform_real_distribution<double>()(random_engine) < probability) {
             if (map[nr][nc] == nullptr)
-                dfs(nr, nc, j, prob * .9);
+                rooms = dfs(nr, nc, j, prob * .9, rooms);
             map[r][c]->setDoor(j);
             map[nr][nc]->setDoor((j + 2) % 4);
         }
     }
+    return rooms;
 }
 
 int Map::getRows() const {
