@@ -51,8 +51,9 @@ Item* TreasureChest::getItem() {
     return i;
 }
 
-void TreasureChest::receiveImpact(int) {
-    lifePoints = 0;
+void TreasureChest::receiveImpact(int i) {
+    if (i == -1)
+        lifePoints = 0;
 }
 
 const float TreasureChest::radio = 0.9f;

@@ -244,7 +244,7 @@ bool Room::openTreasure(glm::vec3 pos, glm::vec3 dir, float r) {
     for (Enemy *e : enemies){
         if (e->type() == 5 and collition(pos+dir*(r+e->radius()),e->position(),r,e->radius())){// hay cofre delante
             std::cout<<"cofreee!"<<std::endl;
-            e->receiveImpact(1);
+            e->receiveImpact(-1);
             return true;
         }
     }
