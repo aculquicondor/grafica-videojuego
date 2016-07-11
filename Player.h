@@ -34,6 +34,7 @@ public:
     void reciveImpact(int);
     glm::vec3 direction();
     int getPower();
+    void upgrade(int item);
 
     static const float radius;
 private:

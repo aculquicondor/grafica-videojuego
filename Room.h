@@ -61,6 +61,7 @@ public:
     void generateEnemies(int,bool);
     void generateItems(int key);
     void generateTreasureChest();
+    int itemCollition(glm::vec3 pos, float r);
 
 private:
     GLuint texture;

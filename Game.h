@@ -40,6 +40,7 @@ private:
     float graceTime;
     int shot;
     float shotTime;
+    bool treasureKey;
 
     Map *map;
     Player *player;

@@ -93,7 +93,16 @@ void Game::mainLoop() {
         room->removeDead();
     }
 
+    /*comer items*/
+    int item = room->itemCollition(player_pos,player->radius);
+    while(item >= 0){
+        player->upgrade(item);
+        item = room->itemCollition(player_pos,player->radius);
+    }
+    if (treasureKey){
 
+        treasureKey = false;
+    }
 
     /*siguiente posicion de los enemigos, como tbm la colicion con las balas*/
     room->update(delta_time, player_pos);
@@ -156,6 +165,8 @@ void Game::keyDown(unsigned char key, int x, int y) {
             shot = 3;
             shotTime = 0.4;
         }
+    } else if (key == 'f'){ //disparo doble
+        treasureKey = true;
     }
 }
 

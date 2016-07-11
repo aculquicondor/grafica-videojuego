@@ -64,7 +64,7 @@ void Player::reset() {
     x = 0;
     z = 0;
     angle = 0;
-    lifePoints = 100;
+    lifePoints = 150;
     defense = 10;
     power = 50;
     goldenKey = 0;
@@ -118,6 +118,29 @@ glm::vec3 Player::direction() {
 
 int Player::getPower() {
     return power;
+}
+
+void Player::upgrade(int item) {
+    switch (item){
+        case 0:
+            power += 5;
+            break;
+        case 1:
+            defense += 5;
+            break;
+        case 2:
+            speed += 0.25;
+            break;
+        case 3:
+            lifePoints += 25;
+            break;
+        case 4:
+            goldenKey +=1;
+            break;
+        case 5:
+            silverKey +1;
+            break;
+        }
 }
 
 const float Player::radius = 1.f;

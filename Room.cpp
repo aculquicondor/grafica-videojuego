@@ -211,12 +211,33 @@ void Room::generateTreasureChest() {
 void Room::getEnemyItems(Enemy *e) {
     Item* i = e->getItem();
     glm::vec3 pos = e->position();
-    while(i){
-        std::cout<<"item soltado"<<std::endl;
-        items.push_back(i);
-        i->setPosition(pos);
-        i = e->getItem();
+    if (e->type() == 5){// treasure type
+        glm::vec3 dir = {0,0,1};
+        while(i){
+            std::cout<<"item soltado"<<std::endl;
+            items.push_back(i);
+            i->setPosition(pos+dir);
+            i = e->getItem();
+            dir = glm::rotateY(dir,0.3f);
+        }
+    }else {
+        if(i){
+            std::cout<<"item soltado"<<std::endl;
+            items.push_back(i);
+            i->setPosition(pos);
+        }
     }
+}
+
+int Room::itemCollition(glm::vec3 pos, float r) {
+    for (int i=0 ; i<items.size() ; ++i){
+        if (collition(pos,items[i]->position(),r,Item::radio)){
+            int item = items[i]->getType();
+            items.erase(items.begin()+i);
+            return item;
+        }
+    }
+    return -1;
 }
 
 const float Room::width = 15;
