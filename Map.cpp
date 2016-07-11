@@ -106,14 +106,3 @@ Room* Map::serCurrent(int r, int c) {
     currentRoom->discover();
     return currentRoom;
 }
-
-vector<int> Map::generateRandomList(int min, int max, int iter) {
-    vector<int> list(max-min,0);
-    for (int i=0 ; i<list.size() ; ++i)
-        list[i] = i+min;
-    for (int i=0 ; i<iter ;++i){
-        int ran = std::uniform_int_distribution<int>(i, list.size()-1)(random_engine);
-        swap(list[i],list[ran]);
-    }
-    return list;
-}

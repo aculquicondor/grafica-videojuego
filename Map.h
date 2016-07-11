@@ -52,7 +52,6 @@ private:
     GLuint room_texture;
     Room * currentRoom;
     vector<Room *> myRooms; //el primer elemento es el estar y el ultimo es exit
-    vector<int> generateRandomList(int min, int max, int iter);
 
     bool valid(int r, int c);
     std::size_t dfs(int r, int c, int dir, double prob, std::size_t rooms);

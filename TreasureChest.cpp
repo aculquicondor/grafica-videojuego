@@ -55,4 +55,4 @@ void TreasureChest::receiveImpact(int) {
     lifePoints = 0;
 }
 
-const float TreasureChest::radio = 0.5f;
+const float TreasureChest::radio = 0.9f;

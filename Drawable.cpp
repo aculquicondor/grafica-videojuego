@@ -11,6 +11,7 @@ Drawable::Drawable(Player * p): myPlayer(p) {
     myModels.push_back(Model::getModel("raticate"));
     myModels.push_back(Model::getModel("golem"));
     myModels.push_back(Model::getModel("arbok"));
+    myModels.push_back(Model::getModel("chest"));
 }
 
 Drawable::~Drawable() {
@@ -232,9 +233,9 @@ void Drawable::drawEnemies(Enemy * e) {
         glutSolidSphere(e->radius(),10,10);
         //std::cout<< pos.x<<" "<<pos.z<<std::endl;
     } else if (e->type() == 5){ // cofre
-        glColor3f(1, 1, 1);
+        glColor3f(0.357, 0.267, 0.169);
         glTranslatef(0,1,0);
-        glutSolidSphere(e->radius(),10,10);
+        myModels[4]->draw();
     }
 
     glPopMatrix();
