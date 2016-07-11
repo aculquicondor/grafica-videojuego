@@ -35,6 +35,8 @@ public:
     glm::vec3 direction();
     int getPower();
     void upgrade(int item);
+    bool haveKeys(bool key);
+    void useKey(bool key);
 
     static const float radius;
 private:

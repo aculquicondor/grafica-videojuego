@@ -218,7 +218,7 @@ void Room::getEnemyItems(Enemy *e) {
             items.push_back(i);
             i->setPosition(pos+dir);
             i = e->getItem();
-            dir = glm::rotateY(dir,0.3f);
+            dir = glm::rotateY(dir,1.0f);
         }
     }else {
         if(i){
@@ -238,6 +238,17 @@ int Room::itemCollition(glm::vec3 pos, float r) {
         }
     }
     return -1;
+}
+
+bool Room::openTreasure(glm::vec3 pos, glm::vec3 dir, float r) {
+    for (Enemy *e : enemies){
+        if (e->type() == 5 and collition(pos+dir*(r+e->radius()),e->position(),r,e->radius())){// hay cofre delante
+            std::cout<<"cofreee!"<<std::endl;
+            e->receiveImpact(1);
+            return true;
+        }
+    }
+    return false;
 }
 
 const float Room::width = 15;

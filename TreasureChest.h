@@ -27,7 +27,7 @@ public:
     int type();
     int getLifePoints();
     int getPower();
-    void receiveImpact(int){};
+    void receiveImpact(int);
     void createItem(int typeItem);
     Item* getItem();
 

@@ -107,8 +107,6 @@ void Player::reciveImpact(int attack) {
         lifePoints -= damage;
         graceTime = 1.5;
         std::cout << "life points : "<<lifePoints << std::endl;
-        std::cout << "attack : "<<attack << std::endl;
-        std::cout << "defense : "<<defense << std::endl;
     }
 }
 
@@ -135,12 +133,26 @@ void Player::upgrade(int item) {
             lifePoints += 25;
             break;
         case 4:
-            goldenKey +=1;
+            ++goldenKey;
             break;
         case 5:
-            silverKey +1;
+            ++silverKey;
             break;
         }
+}
+
+bool Player::haveKeys(bool key) {
+    if (key)
+        return goldenKey>0;
+    else
+        return silverKey>0;
+}
+
+void Player::useKey(bool key) {
+    if (key)
+        --goldenKey;
+    else
+        --silverKey;
 }
 
 const float Player::radius = 1.f;

@@ -99,8 +99,9 @@ void Game::mainLoop() {
         player->upgrade(item);
         item = room->itemCollition(player_pos,player->radius);
     }
-    if (treasureKey){
-
+    if (treasureKey and player->haveKeys(false)){ //busca si tiene llaves plateadas
+        if (room->openTreasure(player_pos,player->direction(),player->radius))
+            player->useKey(false); //usa una llave plateada
         treasureKey = false;
     }
 
