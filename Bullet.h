@@ -12,7 +12,7 @@
 
 class Bullet : public Enemy{
 private:
-    glm::vec3 cPosition, direction, nextpos;
+    glm::vec3 cPosition, nextpos;
     //bool alive;
     float speed;
     /* tipo 0 no rebota
@@ -21,6 +21,7 @@ private:
     int power;
     int lifePoints;
 public:
+    glm::vec3 direction;
     Bullet(glm::vec3, glm::vec3, int, int, float);
     ~Bullet();
     glm::vec3 stepTest(float time, glm::vec3 playerPosition);

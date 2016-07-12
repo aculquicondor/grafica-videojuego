@@ -116,6 +116,8 @@ void Room::update(float time, glm::vec3 player_pos) {
             enemy->receiveImpact(damage);
     }
 
+    for (ParticleEngine *pe : particles)
+        pe->step(time);
     removeDead();
 }
 
@@ -123,7 +125,16 @@ void Room::removeDead() {
     for (int i=0 ; i<enemies.size() ; ++i){
         if (enemies[i]->getLifePoints() <= 0){
             getEnemyItems(enemies[i]);
+            if (enemies[i]->type() != 5)
+                particles.push_back(new ParticleEngine (400, enemies[i]->position(),0));
             enemies.erase(enemies.begin()+i);
+            --i;
+        }
+    }
+    for (int i=0 ; i<particles.size() ; i++) {
+        if (particles[i]->size <= 0) {
+            delete particles[i];
+            particles.erase(particles.begin()+i);
             --i;
         }
     }
@@ -249,6 +260,10 @@ bool Room::openTreasure(glm::vec3 pos, glm::vec3 dir, float r) {
         }
     }
     return false;
+}
+
+vector<ParticleEngine *>* Room::getParticles() {
+    return &particles;
 }
 
 const float Room::width = 15;

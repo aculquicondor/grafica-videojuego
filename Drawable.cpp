@@ -15,6 +15,7 @@ Drawable::Drawable(Player * p): myPlayer(p) {
 }
 
 Drawable::~Drawable() {
+    myParticles = nullptr;
     myMap = nullptr;
     myPlayer = nullptr;
     myRoom = nullptr;
@@ -29,6 +30,7 @@ void Drawable::setMap(Map * m) {
 
 void Drawable::setRoom(Room * r) {
     myRoom = r;
+    myParticles = r->getParticles();
 }
 
 void Drawable::draw() {
@@ -47,6 +49,9 @@ void Drawable::draw() {
     int itemsize = myRoom->itemsSize();
     for (int i=0 ; i<itemsize ; ++i)
         drawItem(myRoom->getItem(i));
+
+    for (ParticleEngine *pe : *myParticles)
+        drawParticles(pe);
 
     drawPlayer();
 }
@@ -262,4 +267,35 @@ void Drawable::drawItem(Item * i) {
     glTranslatef(pos.x,1,pos.z);
     glutSolidSphere(Item::radio,10,10);
     glPopMatrix();
+}
+
+bool compareParticles(Particle* particle1, Particle* particle2) {
+    return particle1->pos.z < particle2->pos.z;
+}
+
+void Drawable::drawParticles(ParticleEngine *pe) {
+        //glEnable(GL_TEXTURE_2D);
+        //glBindTexture(GL_TEXTURE_2D, textureId);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        sort(pe->myParticles.begin(), pe->myParticles.end(), compareParticles);
+        glBegin(GL_QUADS);
+        for (Particle *p : pe->myParticles){
+            if (p->alive)
+            {
+                glm::vec3 pos = p->pos;
+                glColor4f(1,p->alpha,0,p->alpha);
+                float s = p->size;
+                glTexCoord2f(0,0);
+                glVertex3f(pos.x - s, pos.y - s, pos.z);
+                glTexCoord2f(0,1);
+                glVertex3f(pos.x - s, pos.y + s, pos.z);
+                glTexCoord2f(1,1);
+                glVertex3f(pos.x + s, pos.y + s, pos.z);
+                glTexCoord2f(1,0);
+                glVertex3f(pos.x + s, pos.y - s, pos.z);
+            }
+        }
+        glEnd();
 }

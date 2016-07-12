@@ -29,6 +29,7 @@ set(SOURCE_FILES main.cpp
         Drawable.cpp Drawable.h
         Bullet.cpp Bullet.h
         Item.cpp Item.h
-        TreasureChest.cpp TreasureChest.h)
+        TreasureChest.cpp TreasureChest.h
+        ParticleEngine.cpp ParticleEngine.h)
 add_executable(videogame ${SOURCE_FILES})
 target_link_libraries(videogame ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${FREEIMAGE_LIBRARIES})

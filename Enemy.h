@@ -3,6 +3,7 @@
 
 #include <glm/vec3.hpp>
 #include "Item.h"
+#include "ParticleEngine.h"
 
 class Enemy {
 public:

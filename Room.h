@@ -63,11 +63,13 @@ public:
     void generateTreasureChest();
     int itemCollition(glm::vec3 pos, float r);
     bool openTreasure(glm::vec3 pos,glm::vec3 dir, float r);
+    vector<ParticleEngine *> * getParticles();
 
 private:
     GLuint texture;
     std::vector<Enemy *> enemies;
     std::vector<Item *> items;
+    std::vector<ParticleEngine *> particles;
     std::default_random_engine random_engine;
 
     bool _seen;

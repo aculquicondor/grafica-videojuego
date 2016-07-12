@@ -16,6 +16,7 @@
 #include "Golem.h"
 #include "Arbok.h"
 #include "Item.h"
+#include "ParticleEngine.h"
 #include "Model.h"
 
 class Drawable {
@@ -32,6 +33,8 @@ private:
     void drawEnemies(Enemy *);
     void drawPlayer();
     void drawItem(Item *);
+    vector<ParticleEngine *> * myParticles;
+    void drawParticles(ParticleEngine *pe);
 public:
     Drawable(Player *);
     ~Drawable();
