@@ -27,6 +27,7 @@ private:
     Player * myPlayer;
     //vector<Item *> myItems;
 
+    void drawString(GLfloat x, GLfloat y, const std::string &s);
     void drawSquare(glm::vec2 min, glm::vec2 max);
     void drawHexahedron(glm::vec3 lower,glm::vec3 upper);
     void drawRoom(Room *);
@@ -43,9 +44,8 @@ public:
     void setMap(Map *);
     void setRoom(Room *);
     void draw();
-    void drawMiniMap();
-    void drawPlayeStatus();
-    void drawMonsterStatus();
+    void drawMiniMap(GLsizei width);
+    void drawInfo(GLsizei width, GLsizei height);
 };
 
 

@@ -56,8 +56,44 @@ void Drawable::draw() {
     drawPlayer();
 }
 
+
+void Drawable::drawString(GLfloat x, GLfloat y, const std::string &s) {
+    glRasterPos2f(x, y);
+    for (char c: s)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+}
+
+void Drawable::drawInfo(GLsizei width, GLsizei height) {
+    glLoadIdentity();
+    glViewport(0, 0, width, height);
+    float in_width = 30;
+    glOrtho(0, in_width, 0, in_width * height / width, -1, 1);
+    glColor3f(0.2, 0.2, 0.9);
+    int life = myPlayer->getlifePoints() / 10;
+    drawString(0, 0.2, "Life:");
+    glPushMatrix();
+    glTranslatef(3, 0.5, 0);
+    for (int i = 0; i < life; ++i) {
+        glutSolidSphere(0.5, 10, 10);
+        glTranslatef(1, 0, 0);
+    }
+    glPopMatrix();
+    glColor3f(0.2, 0.9, 0.2);
+    drawString(0, 1.2, "Power:");
+    glTranslatef(3, 1.5, 0);
+    int power = myPlayer->getPower() / 10;
+    for (int i = 0; i < power; ++i) {
+        glutSolidSphere(0.5, 10, 10);
+        glTranslatef(1, 0, 0);
+    }
+}
+
+
 /* --- --------------------------------------------------------------*/
-void Drawable::drawMiniMap() {
+void Drawable::drawMiniMap(GLsizei width) {
+    glLoadIdentity();
+    glViewport(width - 400, 0, 400, 400);
+    glOrtho(0, 17, 0, 17, -1, 1);
     float x,y;
     float rows = myMap->getRows();
     float cols = myMap->getColumns();

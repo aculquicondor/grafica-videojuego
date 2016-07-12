@@ -123,12 +123,10 @@ void Game::mainLoop() {
     painter->draw();
 
 
-    if (mapShow) {
-        glLoadIdentity();
-        glViewport(width - 400, 0, 400, 400);
-        glOrtho(0, 17, 0, 17, -1, 1);
-        painter->drawMiniMap();
-    }
+    if (mapShow)
+        painter->drawMiniMap(width);
+
+    painter->drawInfo(width, height);
 
     glutSwapBuffers();
     glFlush();
